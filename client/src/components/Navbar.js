@@ -90,7 +90,7 @@ const Navbar = () => {
   }
 
   return (
-    <nav className={`flex justify-between items-center py-4 px-6 shadow-md ${darkMode ? "bg-gray-800 text-white" : "bg-white text-gray-900"}`}>
+    <div className={`flex justify-between items-center py-4 px-6 shadow-md ${darkMode ? "bg-gray-800 text-white" : "bg-white text-gray-900"}`}>
       {/* Left Side (Links) */}
       <div className="flex space-x-6">
         <Link href="/home" className="hover:text-blue-500">Home</Link>
@@ -117,7 +117,7 @@ const Navbar = () => {
           {darkMode ? "🌙 Dark" : "☀️ Light"}
         </button>
       </div>
-    </nav>
+    </div>
   );
 };
 
