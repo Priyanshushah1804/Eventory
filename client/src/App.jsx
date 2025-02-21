@@ -9,6 +9,7 @@ import Contact from "./pages/Contact";
 import Events from "./pages/Events";
 import Demo from "./pages/Demo";
 import ContactUs from "./components/ContactUs";
+import Resale from "./pages/Resale";
 
 export default function App() {
   const [account, setAccount] = useState("");
@@ -63,7 +64,9 @@ export default function App() {
             <Link to="/contactus" className="hover:text-blue-500">Contact Us</Link>
             <Link to="/events" className="hover:text-blue-500">Events</Link>
             <Link to="/demo" className="hover:text-blue-500">Demo</Link>
-           
+            <Link to="/resale" className="hover:text-blue-500">Resale</Link>
+            <Link to="/demo" className="hover:text-blue-500">Demo</Link>
+
           </div>
 
           {/* Right Side (Buttons) */}
@@ -87,6 +90,7 @@ export default function App() {
           <Route path="/events" element={<Events state={state}  account={account}/>} />
           <Route path="/demo" element={<Demo state={state}  account={account}/>} />
           <Route path="/contactus" element={<ContactUs />} />
+          <Route path="/resale" element={<Resale state={state}  account={account} />} />
         </Routes>
 
         {/* Connected Wallet Display */}
