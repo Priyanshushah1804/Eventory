@@ -109,7 +109,7 @@ const Events = ({ state, account }) => {
         width={800}
       >
         {selectedOccasion && (
-          <SeatSelectionModal occasion={selectedOccasion} onClose={handleModalClose} />
+          <SeatSelectionModal occasion={selectedOccasion} onClose={handleModalClose} state={state}/>
         )}
       </Modal>
     </div>
