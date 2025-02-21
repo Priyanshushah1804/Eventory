@@ -55,7 +55,7 @@ export default function App() {
   return (
     <Router>
       <div className="min-h-screen bg-gray-900 text-white">
-        <Navbar account={account} connectWallet={connectWallet} />
+        <Navbar account={account} connectWallet={connectWallet} state={state}/>
 
         {/* Routing Configuration */}
         <Routes>
