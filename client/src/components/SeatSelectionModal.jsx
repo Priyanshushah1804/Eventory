@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-const SeatSelectionModal = ({ occasion, onClose }) => {
+const SeatSelectionModal = ({ occasion, onClose, state }) => {
+  const { contract } = state;
   const [selectedSeats, setSelectedSeats] = useState([]);
+  const [seatsBooked, setSeatsBooked] = useState([]);
 
   if (!occasion) return null; // Ensure occasion is defined
 
@@ -12,7 +14,17 @@ const SeatSelectionModal = ({ occasion, onClose }) => {
       setSelectedSeats([...selectedSeats, seatNumber]);
     }
   };
-  console.log(occasion)
+  const getSeatsTaken = async () => {
+    let tx = await contract.getSeatsTaken(occasion.id);
+    tx = Object.values(tx);
+    setSeatsBooked(tx);
+  };
+
+  useEffect(() => {
+    getSeatsTaken();
+    setSeatsBooked([]);
+    setSelectedSeats([]);
+  }, [occasion]);
   return (
     <div className="p-6 bg-gray-800 text-white rounded-lg">
       {/* Modal Header */}
@@ -55,26 +67,32 @@ const SeatSelectionModal = ({ occasion, onClose }) => {
               <button
                 className={`p-2 rounded-md transition ${
                   selectedSeats.includes(index + 1)
-                    ? "bg-red-600"
+                    ? "bg-green-600"
+                    : seatsBooked.includes(BigInt(index + 1))
+                    ? "bg-red-600 cursor-not-allowed"
                     : "bg-gray-700 hover:bg-gray-600"
                 }`}
                 onClick={() => toggleSeatSelection(index + 1)}
+                disabled={seatsBooked.includes(BigInt(index + 1)) || (selectedSeats.length>0 && !selectedSeats.includes(index + 1))}
               >
-                {index + 1} {/* Display only the seat number */}
+                {index + 1}
               </button>
-              {/* Leave the 6th column empty */}
               {(index + 1) % 10 === 5 && <div className="col-span-1"></div>}
             </React.Fragment>
           ))}
         </div>
       </div>
 
-      {/* Close Button */}
       <button
-        className="mt-6 w-full py-2 bg-red-600 hover:bg-red-500 rounded-md transition"
+        className={`mt-6 w-full py-2 rounded-md transition ${
+          selectedSeats.length > 0
+            ? "bg-red-600 hover:bg-red-500"
+            : "bg-gray-400 cursor-not-allowed"
+        }`}
         onClick={onClose}
+        disabled={selectedSeats.length === 0 }
       >
-        Close
+        Book tickets
       </button>
     </div>
   );
