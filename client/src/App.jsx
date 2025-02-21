@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 import Register from "./pages/Register";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
+import Events from "./pages/Events";
 
 export default function App() {
   const [account, setAccount] = useState("");
@@ -46,6 +47,7 @@ export default function App() {
     }
   }
 
+
   return (
     <Router>
       <div className={`min-h-screen bg-gray-900 text-white`}>
@@ -57,6 +59,7 @@ export default function App() {
             <Link to="/register" className="hover:text-blue-500">Register</Link>
             <Link to="/about" className="hover:text-blue-500">About</Link>
             <Link to="/contact" className="hover:text-blue-500">Contact</Link>
+            <Link to="/events" className="hover:text-blue-500">Events</Link>
           </div>
 
           {/* Right Side (Buttons) */}
@@ -74,9 +77,10 @@ export default function App() {
         {/* Routing Configuration */}
         <Routes>
           <Route path="/" element={<Home state={state} />} />
-          <Route path="/register" element={<Register />} />
+          <Route path="/register" element={<Register state={state}  account={account}/>} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/events" element={<Events state={state}  account={account}/>} />
         </Routes>
 
         {/* Connected Wallet Display */}
