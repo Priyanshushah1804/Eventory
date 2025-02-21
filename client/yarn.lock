@@ -886,7 +886,7 @@ chalk@^4.0.0:
   version "0.0.0"
   dependencies:
     "@tailwindcss/vite" "^4.0.7"
-    client2 "file:../../../../Library/Caches/Yarn/v6/npm-client2-0.0.0-db19be96-fe75-41e8-b7df-dc91568c3751-1740087086295/node_modules/client2"
+    client2 "file:../../../Library/Caches/Yarn/v6/npm-client2-0.0.0-1b961f1c-94f6-4e1d-b546-f353615e7179-1740125672483/node_modules/client2"
     ethers "^6.13.5"
     react "^19.0.0"
     react-dom "^19.0.0"
@@ -1905,6 +1905,11 @@ lru-cache@^5.1.1:
   integrity sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==
   dependencies:
     yallist "^3.0.2"
+
+lucide-react@^0.475.0:
+  version "0.475.0"
+  resolved "https://registry.yarnpkg.com/lucide-react/-/lucide-react-0.475.0.tgz#4b7b62c024f153ee4b52a6a0f33f9e72f07156f0"
+  integrity sha512-NJzvVu1HwFVeZ+Gwq2q00KygM1aBhy/ZrhY9FsAgJtpB+E4R7uxRk9M2iKvHa6/vNxZydIB59htha4c2vvwvVg==
 
 math-intrinsics@^1.1.0:
   version "1.1.0"
