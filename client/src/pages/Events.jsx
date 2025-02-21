@@ -1,8 +1,12 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { Modal, Checkbox, Button, Row, Col } from "antd";
 
 const Events = ({ state, account }) => {
   const [occasions, setOccasions] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedOccasion, setSelectedOccasion] = useState(null);
+  const [selectedSeats, setSelectedSeats] = useState([]);
   const { contract } = state;
 
   useEffect(() => {
@@ -34,6 +38,18 @@ const Events = ({ state, account }) => {
     } catch (error) {
       console.error("Error fetching events:", error);
     }
+  };
+
+  const handleBuyTicket = (occasion) => {
+    setSelectedOccasion(occasion);
+    setIsModalOpen(true);
+  };
+
+  const handleProceed = (seats) => {
+    console.log("Selected Seats:", seats);
+    console.log("Selected Occasion:", selectedOccasion);
+    setSelectedSeats(seats);
+    setIsModalOpen(false);
   };
 
   return (
@@ -76,12 +92,75 @@ const Events = ({ state, account }) => {
             </div>
 
             {/* Purchase Button */}
-            <button className="mt-4 w-full py-2 bg-indigo-600 hover:bg-indigo-500 rounded-md transition">
+            <button
+              className="mt-4 w-full py-2 bg-indigo-600 hover:bg-indigo-500 rounded-md transition"
+              onClick={() => handleBuyTicket(occasion)}
+            >
               Buy Ticket
             </button>
           </motion.div>
         ))}
       </div>
+
+      {/* Seat Selection Modal */}
+      {selectedOccasion && (
+        <Modal
+          title={`Select Seats for ${selectedOccasion.name}`}
+          open={isModalOpen}
+          onCancel={() => setIsModalOpen(false)}
+          footer={[
+            <Button key="proceed" type="primary" onClick={() => handleProceed(selectedSeats)}>
+              Proceed
+            </Button>,
+          ]}
+        >
+          <Row gutter={[16, 16]}>
+            {/* First Half of Seats */}
+            <Col span={12}>
+              {Array.from({ length: selectedOccasion.maxTickets / 2 }, (_, i) => i + 1).map((seat) => (
+                <div key={seat}>
+                  <Checkbox
+                    disabled={selectedSeats.includes(seat)}
+                    checked={selectedSeats.includes(seat)}
+                    onChange={() => {
+                      if (selectedSeats.includes(seat)) {
+                        setSelectedSeats(selectedSeats.filter((s) => s !== seat));
+                      } else {
+                        setSelectedSeats([...selectedSeats, seat]);
+                      }
+                    }}
+                  >
+                    Seat {seat}
+                  </Checkbox>
+                </div>
+              ))}
+            </Col>
+            {/* Second Half of Seats */}
+            <Col span={12}>
+              {Array.from(
+                { length: selectedOccasion.maxTickets / 2 },
+                (_, i) => i + 1 + selectedOccasion.maxTickets / 2
+              ).map((seat) => (
+                <div key={seat}>
+                  <Checkbox
+                    disabled={selectedSeats.includes(seat)}
+                    checked={selectedSeats.includes(seat)}
+                    onChange={() => {
+                      if (selectedSeats.includes(seat)) {
+                        setSelectedSeats(selectedSeats.filter((s) => s !== seat));
+                      } else {
+                        setSelectedSeats([...selectedSeats, seat]);
+                      }
+                    }}
+                  >
+                    Seat {seat}
+                  </Checkbox>
+                </div>
+              ))}
+            </Col>
+          </Row>
+        </Modal>
+      )}
     </div>
   );
 };
