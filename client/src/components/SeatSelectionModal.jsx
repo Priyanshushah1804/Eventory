@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { ethers } from "ethers";
 
 const SeatSelectionModal = ({ occasion, onClose, state }) => {
   const { contract } = state;
@@ -24,7 +25,14 @@ const SeatSelectionModal = ({ occasion, onClose, state }) => {
     getSeatsTaken();
     setSeatsBooked([]);
     setSelectedSeats([]);
+    console.log(occasion.cost)
   }, [occasion]);
+  const buyTicket=async(id,seat)=>{
+    const tx = await contract.mint(id,seat, { value:ethers.parseEther(occasion.cost.toString()) })
+    console.log(tx)
+    setSelectedSeats([])
+    onClose()
+  }
   return (
     <div className="p-6 bg-gray-800 text-white rounded-lg">
       {/* Modal Header */}
@@ -89,7 +97,7 @@ const SeatSelectionModal = ({ occasion, onClose, state }) => {
             ? "bg-red-600 hover:bg-red-500"
             : "bg-gray-400 cursor-not-allowed"
         }`}
-        onClick={onClose}
+        onClick={()=>buyTicket(occasion.id,selectedSeats[0])}
         disabled={selectedSeats.length === 0 }
       >
         Book tickets
