@@ -61,120 +61,82 @@ const Register = ({state}) => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto mt-10 p-8 bg-gradient-to-br from-gray-800 to-gray-900 text-white rounded-lg shadow-xl">
-      <h2 className="text-3xl font-bold text-center mb-6">List an Occasion</h2>
-
-      <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-5">
-        {/* Event Name */}
+    <div className="bg-gradient-to-br from-gray-900 to-black min-h-screen p-10 text-white">
+    <div className="max-w-2xl  bg-gradient-to-br from-gray-900 mx-auto mt-12 p-10 text-white rounded-2xl shadow-2xl border border-gray-700">
+    <h2 className="text-4xl font-extrabold text-center mb-8 tracking-wide">List an Occasion</h2>
+  
+    <form onSubmit={handleSubmit} className="space-y-6">
+      {/* Event Name */}
+      <div>
+        <label className="block text-lg font-semibold mb-2">Event Name</label>
+        <input type="text" name="name" onChange={(e) => setName(e.target.value)} required 
+          className="w-full p-4 bg-gray-800 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-green-500 outline-none placeholder-gray-400"
+          placeholder="Enter event name" />
+      </div>
+  
+      {/* Cost */}
+      <div>
+        <label className="block text-lg font-semibold mb-2">Cost (ETH)</label>
+        <input type="number" name="cost" step="any" onChange={(e) => setCost(e.target.value)} required 
+          className="w-full p-4 bg-gray-800 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-green-500 outline-none placeholder-gray-400"
+          placeholder="Enter cost" />
+      </div>
+  
+      {/* Max Tickets */}
+      <div>
+        <label className="block text-lg font-semibold mb-2">Max Tickets</label>
+        <input type="number" name="maxTickets" onChange={(e) => setMaxTickets(e.target.value)} required 
+          className="w-full p-4 bg-gray-800 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-green-500 outline-none placeholder-gray-400"
+          placeholder="Enter max tickets" />
+      </div>
+  
+      {/* Date & Time */}
+      <div className="grid grid-cols-2 gap-6">
         <div>
-          <label className="block font-semibold text-lg">Event Name</label>
-          <input
-            type="text"
-            name="name"
-            onChange={(e) => setName(e.target.value)}
-            required
-            className="w-full p-3 border rounded-md text-black"
-            placeholder="Enter event name"
-          />
+          <label className="block text-lg font-semibold mb-2">Date</label>
+          <input type="date" name="date" onChange={(e) => setDate(e.target.value)} required 
+            className="w-full p-4 bg-gray-800 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-green-500 outline-none" />
         </div>
-
-        {/* Cost */}
         <div>
-          <label className="block font-semibold text-lg">Cost (ETH)</label>
-          <input
-            type="number"
-            name="cost"
-            step="any"
-            onChange={(e) => setCost(e.target.value)}
-            required
-            className="w-full p-3 border rounded-md text-black"
-            placeholder="Enter cost"
-          />
+          <label className="block text-lg font-semibold mb-2">Time</label>
+          <input type="time" name="time" onChange={(e) => setTime(e.target.value)} required 
+            className="w-full p-4 bg-gray-800 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-green-500 outline-none" />
         </div>
+      </div>
+  
+      {/* Location */}
+      <div>
+        <label className="block text-lg font-semibold mb-2">Location</label>
+        <input type="text" name="location" onChange={(e) => setLocation(e.target.value)} required 
+          className="w-full p-4 bg-gray-800 border border-gray-600 rounded-lg text-white focus:ring-2 focus:ring-green-500 outline-none placeholder-gray-400"
+          placeholder="Enter event location" />
+      </div>
+  
+      {/* Upload Banner */}
+      <div>
+        <label className="block text-lg font-semibold mb-2">Upload Banner</label>
+        <div className="border border-dashed border-gray-500 p-6 rounded-lg flex flex-col items-center justify-center cursor-pointer bg-gray-800 hover:bg-gray-700 transition-all">
+          <input type="file" accept="image/*" onChange={uploadToIPFS} className="hidden" id="fileUpload" />
+          <label htmlFor="fileUpload" 
+       className="bg-blue-600 hover:from-purple-600 hover:to-blue-700 px-6 py-3 rounded-xl text-white font-semibold transition-all cursor-pointer shadow-lg shadow-purple-400/30 hover:shadow-blue-500/40 active:scale-95">
+    Choose File
+</label>
 
-        {/* Max Tickets */}
-        <div>
-          <label className="block font-semibold text-lg">Max Tickets</label>
-          <input
-            type="number"
-            name="maxTickets"
-            onChange={(e) => setMaxTickets(e.target.value)}
-            required
-            className="w-full p-3 border rounded-md text-black"
-            placeholder="Enter max tickets"
-          />
         </div>
+        {vrurl && <p className="text-sm text-green-400 mt-2">File uploaded successfully!</p>}
+      </div>
+  
+      {/* Submit Button */}
+      <button type="submit" 
+        className="w-xl py-4 bg-gradient-to-r from-purple-500 to-blue-600 text-white font-semibold text-lg rounded-xl shadow-lg shadow-purple-400/30 backdrop-blur-md transition-all hover:scale-101 cursor-pointer hover:shadow-blue-500/40 active:scale-100 active:shadow-sm">
+        List Occasion
+</button>
 
-        {/* Date & Time (Side by Side) */}
-        <div className="grid grid-cols-2 gap-5">
-          <div>
-            <label className="block font-semibold text-lg">Date</label>
-            <input
-              type="date"
-              name="date"
-              onChange={(e) => setDate(e.target.value)}
-              required
-              className="w-full p-3 border rounded-md text-black"
-            />
-          </div>
-
-          <div>
-            <label className="block font-semibold text-lg">Time</label>
-            <input
-              type="time"
-              name="time"
-              onChange={(e) => setTime(e.target.value)}
-              required
-              className="w-full p-3 border rounded-md text-black"
-            />
-          </div>
-        </div>
-
-        {/* Location */}
-        <div>
-          <label className="block font-semibold text-lg">Location</label>
-          <input
-            type="text"
-            name="location"
-            onChange={(e) => setLocation(e.target.value)}
-            required
-            className="w-full p-3 border rounded-md text-black"
-            placeholder="Enter event location"
-          />
-        </div>
-
-        {/* VR Video Upload */}
-        <div>
-          <label className="block font-semibold text-lg">Upload Banner</label>
-          <div className="border border-dashed border-gray-400 p-4 rounded-md flex items-center justify-center">
-            <input
-              type="file"
-              accept="image/*"
-              onChange={uploadToIPFS}
-              className="hidden"
-              id="fileUpload"
-            />
-            <label
-              htmlFor="fileUpload"
-              className="cursor-pointer bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-md text-white"
-            >
-              Choose File
-            </label>
-          </div>
-          {vrurl && (
-            <p className="text-sm text-green-400 mt-2">File uploaded successfully!</p>
-          )}
-        </div>
-
-        {/* Submit Button */}
-        <button
-          type="submit"
-          className="w-full py-3 bg-gradient-to-r from-green-500 to-green-700 text-white font-semibold rounded-md hover:opacity-90 transition-all"
-        >
-          List Occasion
-        </button>
-      </form>
+    </form>
     </div>
+    </div>
+  
+  
   );
 };
 
