@@ -4,7 +4,7 @@ import { ethers } from 'ethers';
 const Demo = ({state,account}) => {
     const {contract} = state;
     const buyTicket = async()=>{
-        const tx = await contract.mint(1, 10, { value: ethers.parseEther("0.00005") });
+        const tx = await contract.mint(1, 99, { value: ethers.parseEther("0.00005") });
         await tx.wait();
         console.log(tx)
     }
