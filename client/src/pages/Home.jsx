@@ -96,11 +96,9 @@ const HomePage = ({ state }) => {
                 Book Now
               </button>
             </a>
-            <a href="/events">
               <button className=" border border-white text-white px-6 py-3 rounded-lg bg-blue-600 text-black transition-colors duration-300">
-                Explore Events
+              <Link to="/events" >Explore Events</Link>
               </button>
-            </a>
           </div>
         </div>
       </div>
