@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Modal, Checkbox, Button, Row, Col } from "antd";
+import { Modal } from "antd";
+import SeatSelectionModal from "../components/SeatSelectionModal";
 
 const Events = ({ state, account }) => {
   const [occasions, setOccasions] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedOccasion, setSelectedOccasion] = useState(null);
-  const [selectedSeats, setSelectedSeats] = useState([]);
   const { contract } = state;
 
   useEffect(() => {
@@ -42,14 +42,12 @@ const Events = ({ state, account }) => {
 
   const handleBuyTicket = (occasion) => {
     setSelectedOccasion(occasion);
-    setIsModalOpen(true);
+    setIsModalVisible(true);
   };
 
-  const handleProceed = (seats) => {
-    console.log("Selected Seats:", seats);
-    console.log("Selected Occasion:", selectedOccasion);
-    setSelectedSeats(seats);
-    setIsModalOpen(false);
+  const handleModalClose = () => {
+    setIsModalVisible(false);
+    setSelectedOccasion(null);
   };
 
   return (
@@ -83,7 +81,7 @@ const Events = ({ state, account }) => {
                 {occasion.cost} ETH
               </span>
               <span className="bg-blue-500 px-3 py-1 rounded-md">
-                {occasion.remainingTickets}/{occasion.maxTickets} Tickets Left
+                {occasion.maxTickets}/{occasion.remainingTickets} Tickets Left
               </span>
             </div>
 
@@ -102,65 +100,18 @@ const Events = ({ state, account }) => {
         ))}
       </div>
 
-      {/* Seat Selection Modal */}
-      {selectedOccasion && (
-        <Modal
-          title={`Select Seats for ${selectedOccasion.name}`}
-          open={isModalOpen}
-          onCancel={() => setIsModalOpen(false)}
-          footer={[
-            <Button key="proceed" type="primary" onClick={() => handleProceed(selectedSeats)}>
-              Proceed
-            </Button>,
-          ]}
-        >
-          <Row gutter={[16, 16]}>
-            {/* First Half of Seats */}
-            <Col span={12}>
-              {Array.from({ length: selectedOccasion.maxTickets / 2 }, (_, i) => i + 1).map((seat) => (
-                <div key={seat}>
-                  <Checkbox
-                    disabled={selectedSeats.includes(seat)}
-                    checked={selectedSeats.includes(seat)}
-                    onChange={() => {
-                      if (selectedSeats.includes(seat)) {
-                        setSelectedSeats(selectedSeats.filter((s) => s !== seat));
-                      } else {
-                        setSelectedSeats([...selectedSeats, seat]);
-                      }
-                    }}
-                  >
-                    Seat {seat}
-                  </Checkbox>
-                </div>
-              ))}
-            </Col>
-            {/* Second Half of Seats */}
-            <Col span={12}>
-              {Array.from(
-                { length: selectedOccasion.maxTickets / 2 },
-                (_, i) => i + 1 + selectedOccasion.maxTickets / 2
-              ).map((seat) => (
-                <div key={seat}>
-                  <Checkbox
-                    disabled={selectedSeats.includes(seat)}
-                    checked={selectedSeats.includes(seat)}
-                    onChange={() => {
-                      if (selectedSeats.includes(seat)) {
-                        setSelectedSeats(selectedSeats.filter((s) => s !== seat));
-                      } else {
-                        setSelectedSeats([...selectedSeats, seat]);
-                      }
-                    }}
-                  >
-                    Seat {seat}
-                  </Checkbox>
-                </div>
-              ))}
-            </Col>
-          </Row>
-        </Modal>
-      )}
+      {/* Antd Modal */}
+      <Modal
+        title="Select Seats"
+        visible={isModalVisible}
+        onCancel={handleModalClose}
+        footer={null}
+        width={800}
+      >
+        {selectedOccasion && (
+          <SeatSelectionModal occasion={selectedOccasion} onClose={handleModalClose} />
+        )}
+      </Modal>
     </div>
   );
 };
