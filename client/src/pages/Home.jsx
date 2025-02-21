@@ -91,13 +91,11 @@ const HomePage = ({ state }) => {
         />
         <div className="absolute inset-0 bg-opacity-50 flex items-center pl-20">
           <div className="space-y-4">
-            <a href="/booking">
               <button className="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition-colors duration-300">
-                Book Now
+              <Link to="/events">Book now</Link>
               </button>
-            </a>
               <button className=" border border-white text-white px-6 py-3 rounded-lg bg-blue-600 text-black transition-colors duration-300">
-              <Link to="/events" >Explore Events</Link>
+              <Link to="/events">Explore Events</Link>
               </button>
           </div>
         </div>
