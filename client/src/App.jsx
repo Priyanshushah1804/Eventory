@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import { ethers } from "ethers";
-import abi from "./abis/De_Ticket.json"; // Adjust the path
+import abi from "./abis/TicketMaster.json" // Adjust the path
 import Home from "./pages/Home";
 import Register from "./pages/Register";
 import About from "./pages/About";
@@ -18,7 +18,7 @@ export default function App() {
   });
 
   async function connectWallet() {
-    const contractAddress = "0xD98D9F17a42580368AA2E938D2b574f407f23C39";
+    const contractAddress = "0x0065cA9739B41a1D24C43c98B83D9cfbeD1681C0";
     const contractABI = abi.abi;
 
     try {

@@ -10,7 +10,7 @@ const Register = ({state}) => {
   const [time, setTime] = useState("");
   const [location, setLocation] = useState("");
   const [vrurl, setVrurl] = useState("");
-  
+
 
 
   const uploadToIPFS = async (e) => {
@@ -145,11 +145,11 @@ const Register = ({state}) => {
 
         {/* VR Video Upload */}
         <div>
-          <label className="block font-semibold text-lg">Upload VR Video</label>
+          <label className="block font-semibold text-lg">Upload Banner</label>
           <div className="border border-dashed border-gray-400 p-4 rounded-md flex items-center justify-center">
             <input
               type="file"
-              accept="video/*"
+              accept="image/*"
               onChange={uploadToIPFS}
               className="hidden"
               id="fileUpload"
