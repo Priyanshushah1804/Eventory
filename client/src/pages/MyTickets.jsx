@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { QRCode } from "antd";
 
 const MyTickets = ({ state, account }) => {
   const { contract } = state;
@@ -25,7 +26,7 @@ const MyTickets = ({ state, account }) => {
           name: occasion.name,
           location: occasion.location,
           // e.g. "2/22/2025" from the local date string
-          date: new Date(rawTimestamp * 1000).toLocaleDateString(),
+          date: occasion.date,
           time: occasion.time,
           seat: seatId,
           // keep the raw Unix timestamp around
@@ -89,11 +90,6 @@ const TicketCard = ({ ticket, onResell, onViewAR }) => {
   return (
     <div className="w-full md:w-auto">
       <div className="max-w-md rounded-md overflow-hidden shadow-lg flex bg-gradient-to-r from-red-500 to-pink-500 text-white relative">
-        {/* -- Empty corner div for future image -- */}
-        <div className="absolute top-2 right-2 w-12 h-12 border border-dashed border-white/50 rounded-md">
-          {/* Add an <img> or any other content here later */}
-        </div>
-
         {/* Left (main) section of the ticket */}
         <div className="flex-1 p-5 relative">
           {/* Date & Time */}
@@ -118,35 +114,45 @@ const TicketCard = ({ ticket, onResell, onViewAR }) => {
           <div className="my-3 h-px w-3/4 bg-white/30" />
 
           {/* Ticket seat info */}
-          <div className="flex flex-row flex-wrap gap-4 text-xs md:text-sm mb-4">
-            <InfoBox label="Entrance" value="A" />
-            <InfoBox label="Block" value="B" />
-            <InfoBox label="Row" value="1" />
-            <InfoBox label="Seat" value={ticket.seat} />
-          </div>
+          <div className="flex justify-between">
+            <div className="flex flex-col">
+              <div className="flex flex-row flex-wrap gap-4 text-xs md:text-sm mb-4">
+                <InfoBox label="Block" value={ticket.seat%10<=5 && ticket.seat!=0?"Left":"Right"} />
+                <InfoBox label="Row" value={Math.floor(ticket.seat / 10) + 1} />
+                <InfoBox label="Seat" value={ticket.seat} />
+              </div>
 
-          {/* Buttons row */}
-          <div className="flex items-center gap-3">
-            {/* Resell Button */}
-            <button
-              className="bg-white/20 hover:bg-white/30 text-white px-3 py-1 rounded-md text-xs font-semibold transition-colors"
-              onClick={() => onResell(ticket.id)}
-            >
-              Resell
-            </button>
+              {/* Buttons row */}
+              <div className="flex items-center gap-3">
+                {/* Resell Button */}
+                <button
+                  className="bg-white/20 hover:bg-white/30 text-white px-3 py-1 rounded-md text-xs font-semibold transition-colors"
+                  onClick={() => onResell(ticket.id)}
+                >
+                  Resell
+                </button>
 
-            {/* View in AR Button */}
-            <button
-              onClick={() => onViewAR(ticket.id)}
-              disabled={!isARActive}
-              className={`px-3 py-1 rounded-md text-xs font-semibold transition-colors ${
-                isARActive
-                  ? "bg-white/20 hover:bg-white/30 text-white"
-                  : "bg-gray-300 text-gray-500 cursor-not-allowed"
-              }`}
-            >
-              View in AR
-            </button>
+                {/* View in AR Button */}
+                <button
+                  onClick={() => onViewAR(ticket.id)}
+                  disabled={!isARActive}
+                  className={`px-3 py-1 rounded-md text-xs font-semibold transition-colors ${
+                    isARActive
+                      ? "bg-white/20 hover:bg-white/30 text-white"
+                      : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                  }`}
+                >
+                  View in AR
+                </button>
+              </div>
+              <div></div>
+            </div>
+              <QRCode
+                style={{ width: "100px", height: "80px",overflow:"visible",border:"none" }}
+                errorLevel="H"
+                value="https://ant.design/"
+                icon="./logo.webp"
+              />
           </div>
 
           {/* Silhouette image at the bottom (optional) */}
