@@ -44,7 +44,6 @@ export default function Navbar({ account, connectWallet, state }) {
           vrUrl: occasion[8],
         });
       }
-      console.log(occasionsList);
       setOccasions(occasionsList);
     } catch (error) {
       console.error("Error fetching events:", error);
@@ -59,7 +58,7 @@ export default function Navbar({ account, connectWallet, state }) {
     { name: "Events", path: "/events" },
     { name: "Demo", path: "/demo" },
     { name: "Resale", path: "/resale" },
-    { name: "My Tickets", path: "/myTickets" },
+    ...(account ? [{ name: "My Tickets", path: "/myTickets" }] : []),
   ];
 
   return (
@@ -70,7 +69,10 @@ export default function Navbar({ account, connectWallet, state }) {
           const isActive = location.pathname === item.path;
 
           return (
-            <li key={item.path} className="relative cursor-pointer px-4 py-2 transition">
+            <li
+              key={item.path}
+              className="relative cursor-pointer px-4 py-2 transition"
+            >
               {/* Capsule Effect (Only on Active Item) */}
               {isActive && (
                 <motion.span
@@ -82,7 +84,11 @@ export default function Navbar({ account, connectWallet, state }) {
 
               {/* Menu Item Text */}
               <Link to={item.path} className="relative z-10">
-                <span className={`transition-colors duration-300 ${isActive ? "text-blue-900 font-semibold" : "text-white"}`}>
+                <span
+                  className={`transition-colors duration-300 ${
+                    isActive ? "text-blue-900 font-semibold" : "text-white"
+                  }`}
+                >
                   {item.name}
                 </span>
               </Link>
@@ -112,24 +118,32 @@ export default function Navbar({ account, connectWallet, state }) {
                   >
                     <div className="flex flex-col space-y-2">
                       {/* Occasion Name */}
-                      <h3 className="text-lg font-semibold text-gray-900">{occasion.name}</h3>
+                      <h3 className="text-lg font-semibold text-gray-900">
+                        {occasion.name}
+                      </h3>
 
                       {/* Occasion Details */}
                       <div className="text-sm text-gray-600">
                         <p>
-                          <span className="font-medium">Cost:</span> {occasion.cost} ETH
+                          <span className="font-medium">Cost:</span>{" "}
+                          {occasion.cost} ETH
                         </p>
                         <p>
-                          <span className="font-medium">Tickets:</span> {occasion.remainingTickets} / {occasion.maxTickets} remaining
+                          <span className="font-medium">Tickets:</span>{" "}
+                          {occasion.remainingTickets} / {occasion.maxTickets}{" "}
+                          remaining
                         </p>
                         <p>
-                          <span className="font-medium">Date:</span> {occasion.date}
+                          <span className="font-medium">Date:</span>{" "}
+                          {occasion.date}
                         </p>
                         <p>
-                          <span className="font-medium">Time:</span> {occasion.time}
+                          <span className="font-medium">Time:</span>{" "}
+                          {occasion.time}
                         </p>
                         <p>
-                          <span className="font-medium">Location:</span> {occasion.location}
+                          <span className="font-medium">Location:</span>{" "}
+                          {occasion.location}
                         </p>
                       </div>
                     </div>
@@ -148,7 +162,9 @@ export default function Navbar({ account, connectWallet, state }) {
         onClick={connectWallet}
         className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
       >
-        {account ? `Connected: ${account.slice(0, 6)}...${account.slice(-4)}` : "Connect Wallet"}
+        {account
+          ? `Connected: ${account.slice(0, 6)}...${account.slice(-4)}`
+          : "Connect Wallet"}
       </button>
     </nav>
   );
