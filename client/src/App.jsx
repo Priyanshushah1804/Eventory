@@ -12,6 +12,7 @@ import ContactUs from "./components/ContactUs";
 import Resale from "./pages/Resale";
 import MyTickets from "./pages/MyTickets";
 import Navbar from "./components/Navbar"; // New Navbar Component
+import MyEvents from "./pages/MyEvents";
 
 export default function App() {
   const [account, setAccount] = useState("");
@@ -68,6 +69,7 @@ export default function App() {
           <Route path="/contactus" element={<ContactUs />} />
           <Route path="/resale" element={<Resale state={state} account={account} />} />
           <Route path="/myTickets" element={<MyTickets state={state} account={account} />} />
+          <Route path="/myEvents" element={<MyEvents state={state} account={account} />} />
         </Routes>
       </div>
     </Router>

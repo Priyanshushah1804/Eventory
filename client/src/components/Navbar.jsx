@@ -13,6 +13,7 @@ export default function Navbar({ account, connectWallet }) {
     { name: "Demo", path: "/demo" },
     { name: "Resale", path: "/resale" },
     { name: "My Tickets", path: "/myTickets" },
+    { name: "My Events", path: "/myEvents" },
   ];
 
   return (
