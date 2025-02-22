@@ -40,6 +40,7 @@ const Events = ({ state, account }) => {
     }
   };
 
+
   const handleBuyTicket = (occasion) => {
     setSelectedOccasion(occasion);
     setIsModalVisible(true);
@@ -49,6 +50,10 @@ const Events = ({ state, account }) => {
     setIsModalVisible(false);
     setSelectedOccasion(null);
   };
+  const uploadVrVideo =(e)=>{
+    e.preventDefault()
+    
+  }
 
   return (
     <div className="min-h-screen bg-gray-900 text-white py-10">
