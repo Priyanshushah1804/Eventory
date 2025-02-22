@@ -63,8 +63,15 @@ export default function Navbar({ account, connectWallet, state }) {
 
   return (
     <nav className="relative flex justify-between items-center py-4 px-6 shadow-md bg-white dark:bg-gray-800">
-      {/* Navigation Menu */}
+
       <ul className="flex space-x-6 relative">
+        <li>
+        <img
+          src="./logo.webp"
+          alt="Logo"
+          className="h-12 w-auto" 
+        />
+        </li>
         {links.map((item) => {
           const isActive = location.pathname === item.path;
 
