@@ -18,7 +18,12 @@ const MyTickets = ({ state, account }) => {
         const seatId = Number(seatIds[i]);
         const occasion = await contract.getOccasion(eventId);
 
-        // NOTE: storing the raw timestamp for occasion time checks
+        // Check if the ticket is exhausted
+        const isExhausted = await contract.ticketExhausted(eventId, seatId);
+        console.log(isExhausted)
+        if (isExhausted) continue; // Skip exhausted tickets
+
+        // Store the raw timestamp for occasion time checks
         const rawTimestamp = Number(occasion.date);
 
         ticketDetails.push({
@@ -29,7 +34,6 @@ const MyTickets = ({ state, account }) => {
           date: occasion.date,
           time: occasion.time,
           seat: seatId,
-          // keep the raw Unix timestamp around
           occasionTimestamp: rawTimestamp,
         });
       }
@@ -42,15 +46,34 @@ const MyTickets = ({ state, account }) => {
     }
   };
 
+
   useEffect(() => {
     getUserTickets();
   }, [contract, account]);
 
   // Placeholder event handlers for buttons
-  const handleResell = (ticketId) => {
-    console.log(`Resell clicked for ticket #${ticketId}`);
-    // Add your logic here
+  const handleResell = async (eventId, ticketId) => {
+    if (!contract || !account) {
+      console.error("Contract or account not found!");
+      return;
+    }
+
+    try {
+      console.log(`Initiating resale for event ${eventId}, ticket ${ticketId}...`);
+
+      // Call the smart contract function
+      const tx = await contract.enableResale(eventId, ticketId);
+      await tx.wait(); // Wait for the transaction to be mined
+
+      console.log(`Resale enabled successfully for ticket #${ticketId} at event #${eventId}`);
+
+      // Optionally, refresh tickets list after resale
+      getUserTickets();
+    } catch (error) {
+      console.error("Error enabling resale:", error);
+    }
   };
+
 
   const handleViewAR = (ticketId) => {
     console.log(`View in AR clicked for ticket #${ticketId}`);
@@ -122,15 +145,15 @@ const TicketCard = ({ ticket, onResell, onViewAR }) => {
                 <InfoBox label="Seat" value={ticket.seat} />
               </div>
 
-              {/* Buttons row */}
-              <div className="flex items-center gap-3">
-                {/* Resell Button */}
-                <button
-                  className="bg-white/20 hover:bg-white/30 text-white px-3 py-1 rounded-md text-xs font-semibold transition-colors"
-                  onClick={() => onResell(ticket.id)}
-                >
-                  Resell
-                </button>
+          {/* Buttons row */}
+          <div className="flex items-center gap-3">
+            {/* Resell Button */}
+            <button
+              className="bg-white/20 hover:bg-white/30 text-white px-3 py-1 rounded-md text-xs font-semibold transition-colors"
+              onClick={() => onResell(ticket.id,ticket.seat)}
+            >
+              Resell
+            </button>
 
                 {/* View in AR Button */}
                 <button
@@ -155,14 +178,6 @@ const TicketCard = ({ ticket, onResell, onViewAR }) => {
               />
           </div>
 
-          {/* Silhouette image at the bottom (optional) */}
-          {/* <div
-            className="absolute bottom-0 left-0 w-full h-10 bg-bottom bg-no-repeat bg-cover"
-            style={{
-              backgroundImage:
-                'url("https://i.ibb.co/3S0YNDb/crowd-silhouette.png")',
-            }}
-          /> */}
         </div>
 
         {/* Right (tear-off) section */}

@@ -19,6 +19,7 @@ contract TicketMaster is ERC721, Ownable {
         string location;
         string bannerImage;
         string vrVideo; // Initially null (empty string)
+        address creator;
     }
 
     mapping(uint256 => Occasion) public occasions;
@@ -27,6 +28,7 @@ contract TicketMaster is ERC721, Ownable {
     mapping(uint256 => uint256[]) public seatsTaken;
     mapping(uint256 => mapping(uint256 => bool)) public ticketExhausted;
     mapping(uint256 => mapping(uint256 => bool)) public resaleAllowed;
+    mapping(address => uint256[]) public creatorEvents;
 
     constructor() ERC721("Token", "Ticket") Ownable(msg.sender) {}
 
@@ -41,8 +43,9 @@ contract TicketMaster is ERC721, Ownable {
     ) public onlyOwner {
         totalOccasions++;
         occasions[totalOccasions] = Occasion(
-            totalOccasions, _name, _cost, _maxTickets, _maxTickets, _date, _time, _location, _bannerImage, ""
+            totalOccasions, _name, _cost, _maxTickets, _maxTickets, _date, _time, _location, _bannerImage, "", msg.sender
         );
+        creatorEvents[msg.sender].push(totalOccasions);
     }
 
     function mint(uint256 _id, uint256 _seat) public payable {
@@ -95,6 +98,10 @@ contract TicketMaster is ERC721, Ownable {
         return (finalEventIds, finalSeatIds);
     }
 
+    function getEventsCreatedBy(address _creator) public view returns (uint256[] memory) {
+        return creatorEvents[_creator];
+    }
+
     function scanTicket(uint256 _eventId, uint256 _seatId) public onlyOwner {
         require(_eventId != 0 && _eventId <= totalOccasions, "Invalid event ID");
         require(seatTaken[_eventId][_seatId] != address(0), "Seat not occupied");
@@ -122,8 +129,9 @@ contract TicketMaster is ERC721, Ownable {
         resaleAllowed[_eventId][_ticketId] = false;
     }
 
-    function setVRVideo(uint256 _id, string memory _vrVideo) public onlyOwner {
+    function setVRVideo(uint256 _id, string memory _vrVideo) public {
         require(_id != 0 && _id <= totalOccasions, "Invalid occasion ID");
+        require(occasions[_id].creator == msg.sender, "Only event creator can set VR video");
         occasions[_id].vrVideo = _vrVideo;
     }
 }
