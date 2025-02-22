@@ -225,7 +225,6 @@ const HomePage = ({ state }) => {
         ))}
       </div>
 
-      {/* Antd Modal */}
       <Modal
         title="Select Seats"
         visible={isModalVisible}
