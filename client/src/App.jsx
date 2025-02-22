@@ -13,6 +13,7 @@ import Resale from "./pages/Resale";
 import MyTickets from "./pages/MyTickets";
 import Navbar from "./components/Navbar"; // New Navbar Component
 import AIChatButton from "./components/AIChatButton";
+import MyEvents from "./pages/MyEvents";
 
 export default function App() {
   const [account, setAccount] = useState("");
@@ -23,7 +24,7 @@ export default function App() {
   });
 
   async function connectWallet() {
-    const contractAddress = "0x0065cA9739B41a1D24C43c98B83D9cfbeD1681C0";
+    const contractAddress = "0xF97C4d0F9F716C360931D012d5fCD5524A53286D";
     const contractABI = abi.abi;
 
     try {
