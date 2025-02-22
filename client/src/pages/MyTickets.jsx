@@ -35,6 +35,7 @@ const MyTickets = ({ state, account }) => {
           time: occasion.time,
           seat: seatId,
           occasionTimestamp: rawTimestamp,
+         
         });
       }
 
@@ -96,6 +97,7 @@ const MyTickets = ({ state, account }) => {
               ticket={ticket}
               onResell={handleResell}
               onViewAR={handleViewAR}
+              index={index} 
             />
           ))}
         </div>
@@ -104,116 +106,126 @@ const MyTickets = ({ state, account }) => {
   );
 };
 
-const TicketCard = ({ ticket, onResell, onViewAR }) => {
+const TicketCard = ({ ticket, onResell, onViewAR, index = 0 }) => {
   // Determine if the event time has arrived
-  const now = new Date().getTime(); // current time in ms
-  const eventStartMs = ticket.occasionTimestamp * 1000; // event start in ms
+  const now = new Date().getTime();
+  const eventStartMs = ticket.occasionTimestamp * 1000;
   const isARActive = now >= eventStartMs;
 
+  // Define 4 gradient styles (excluding the original purple-indigo style)
+  const gradientStyles = [
+    "bg-gradient-to-r from-blue-500 to-teal-500",
+    "bg-gradient-to-r from-purple-600 to-indigo-600",
+    "bg-gradient-to-r from-pink-500 to-yellow-500",
+    "bg-gradient-to-r from-orange-500 to-red-500",
+  ];
+
+  // Use the index to select a gradient style; the pattern repeats every 4 cards.
+  const gradientClass = gradientStyles[index % gradientStyles.length];
+
   return (
-    <div className="w-full md:w-auto">
-      <div className="max-w-md rounded-md overflow-hidden shadow-lg flex bg-gradient-to-r from-red-500 to-pink-500 text-white relative">
-        {/* Left (main) section of the ticket */}
-        <div className="flex-1 p-5 relative">
-          {/* Date & Time */}
-          <div className="text-xs font-medium uppercase tracking-wider mb-1">
-            {ticket.date} • {ticket.time}
-          </div>
+    <>
+      {/* SVG clipPath definition for semicircular cuts on left/right edges */}
+      <svg width="0" height="0">
+        <defs>
+          <clipPath id="ticketClip" clipPathUnits="objectBoundingBox">
+            <path d="
+              M 0,0 
+              L 1,0 
+              L 1,0.4 
+              Q 0.95,0.5 1,0.6 
+              L 1,1 
+              L 0,1 
+              L 0,0.6 
+              Q 0.05,0.5 0,0.4 
+              Z
+            " />
+          </clipPath>
+        </defs>
+      </svg>
 
-          {/* Event Name */}
-          <h2 className="text-2xl md:text-3xl font-extrabold mb-1 uppercase">
-            {ticket.name}
-          </h2>
-
-          {/* Subtext (Performance / Location) */}
-          <p className="text-sm md:text-base font-semibold mb-2">
-            Live Performance
-          </p>
-          <p className="text-base md:text-lg font-bold uppercase">
-            {ticket.location}
-          </p>
-
-          {/* Divider line */}
-          <div className="my-3 h-px w-3/4 bg-white/30" />
-
-          {/* Ticket seat info */}
-          <div className="flex justify-between">
-            <div className="flex flex-col">
-              <div className="flex flex-row flex-wrap gap-4 text-xs md:text-sm mb-4">
-                <InfoBox label="Block" value={ticket.seat%10<=5 && ticket.seat!=0?"Left":"Right"} />
-                <InfoBox label="Row" value={Math.floor(ticket.seat / 10) + 1} />
-                <InfoBox label="Seat" value={ticket.seat} />
-              </div>
-
-          {/* Buttons row */}
-          <div className="flex items-center gap-3">
-            {/* Resell Button */}
-            <button
-              className="bg-white/20 hover:bg-white/30 text-white px-3 py-1 rounded-md text-xs font-semibold transition-colors"
-              onClick={() => onResell(ticket.id,ticket.seat)}
-            >
-              Resell
-            </button>
-
-                {/* View in AR Button */}
-                <button
-                  onClick={() => onViewAR(ticket.id)}
-                  disabled={!isARActive}
-                  className={`px-3 py-1 rounded-md text-xs font-semibold transition-colors ${
-                    isARActive
-                      ? "bg-white/20 hover:bg-white/30 text-white"
-                      : "bg-gray-300 text-gray-500 cursor-not-allowed"
-                  }`}
-                >
-                  View in AR
-                </button>
-              </div>
-              <div></div>
+      {/* Outer container with wider max width and dynamic gradient */}
+      <div
+        className={`w-full md:w-auto mx-auto max-w-[600px] ${gradientClass}`}
+        style={{ clipPath: "url(#ticketClip)" }}
+      >
+        <div className="rounded-md overflow-hidden shadow-xl flex text-white relative">
+          {/* Left (main) section of the ticket */}
+          <div className="flex-1 p-5 relative">
+            <div className="text-xs font-medium uppercase tracking-wider mb-1">
+              {ticket.date} • {ticket.time}
             </div>
+            <h2 className="text-2xl md:text-3xl font-extrabold mb-1 uppercase">
+              {ticket.name}
+            </h2>
+            <p className="text-sm md:text-base font-semibold mb-2">
+              Live Performance
+            </p>
+            <p className="text-base md:text-lg font-bold uppercase">
+              {ticket.location}
+            </p>
+            <div className="my-3 h-px w-3/4 bg-white/30" />
+            <div className="flex justify-between">
+              <div className="flex flex-col">
+                <div className="flex flex-row flex-wrap gap-4 text-xs md:text-sm mb-4">
+                  <InfoBox
+                    label="Block"
+                    value={ticket.seat % 10 <= 5 && ticket.seat !== 0 ? "Left" : "Right"}
+                  />
+                  <InfoBox label="Row" value={Math.floor(ticket.seat / 10) + 1} />
+                  <InfoBox label="Seat" value={ticket.seat} />
+                </div>
+                <div className="flex items-center gap-3">
+                  <button
+                    className="bg-white/20 hover:bg-white/30 text-white px-3 py-1 rounded-md text-xs font-semibold transition-colors"
+                    onClick={() => onResell(ticket.id, ticket.seat)}
+                  >
+                    Resell
+                  </button>
+                  <button
+                    onClick={() => onViewAR(ticket.id)}
+                    disabled={!isARActive}
+                    className={`px-3 py-1 rounded-md text-xs font-semibold transition-colors ${
+                      isARActive
+                        ? "bg-white/20 hover:bg-white/30 text-white"
+                        : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                    }`}
+                  >
+                    View in AR
+                  </button>
+                </div>
+              </div>
               <QRCode
-                style={{ width: "100px", height: "80px",overflow:"visible",border:"none" }}
+                style={{ width: "100px", height: "80px", overflow: "visible", border: "none" }}
                 errorLevel="H"
                 value="https://ant.design/"
                 icon="./logo.webp"
               />
-          </div>
-
-        </div>
-
-        {/* Right (tear-off) section */}
-        <div className="w-24 md:w-28 border-l-2 border-dashed border-white p-3 flex flex-col justify-between relative">
-          {/* Date/time (small) */}
-          <div>
-            <div className="text-xs font-semibold uppercase tracking-wider">
-              {ticket.date}
-            </div>
-            <div className="text-xs font-semibold uppercase tracking-wider">
-              {ticket.time}
             </div>
           </div>
 
-          {/* Title & location repeated */}
-          <div className="mt-2 mb-1 text-sm font-extrabold uppercase">
-            {ticket.name}
+          {/* Right (tear-off) section */}
+          <div className="w-24 md:w-28 border-l-2 border-dashed border-white p-3 flex flex-col justify-between relative">
+            <div>
+              <div className="text-xs font-semibold uppercase tracking-wider">
+                {ticket.date}
+              </div>
+              <div className="text-xs font-semibold uppercase tracking-wider">
+                {ticket.time}
+              </div>
+            </div>
+            <div className="mt-2 mb-1 text-sm font-extrabold uppercase">
+              {ticket.name}
+            </div>
+            <div className="text-xs uppercase">{ticket.location}</div>
+            <div className="text-xs mt-2 font-bold">Seat {ticket.seat}</div>
           </div>
-          <div className="text-xs uppercase">{ticket.location}</div>
-
-          {/* Seat Info Repeated (optional) */}
-          <div className="text-xs mt-2 font-bold">Seat {ticket.seat}</div>
-
-          {/* Silhouette at the bottom (optional) */}
-          {/* <div
-            className="absolute bottom-0 left-0 w-full h-2 bg-bottom bg-no-repeat bg-cover"
-            style={{
-              backgroundImage:
-                'url("https://i.ibb.co/3S0YNDb/crowd-silhouette.png")',
-            }}
-          /> */}
         </div>
       </div>
-    </div>
+    </>
   );
 };
+
 
 /**
  * Helper component for label/value blocks (Entrance, Block, Row, Seat).
