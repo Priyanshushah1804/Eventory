@@ -8,11 +8,42 @@ import { Link } from "react-router-dom";
 // Custom Card Components
 const HomePage = ({ state }) => {
   const [opacity, setOpacity] = useState(1);
-
   const [occasions, setOccasions] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedOccasion, setSelectedOccasion] = useState(null);
+  const visibleCards = [];
+  const [currentIndex, setCurrentIndex] = useState(0);
   const { contract } = state;
+  const locations = [
+    {
+      imageUrl: "./img1.webp",
+      text: "Buy Tickets Easily",
+    },
+    {
+      imageUrl: "./img2.webp",
+      text: "List Your Events",
+    },
+    {
+      imageUrl: "./img3.webp",
+      text: "Resell Tickets Safely",
+    },
+    {
+      imageUrl: "./img4.webp",
+      text: "Rebuy Sold-Out Tickets",
+    },
+    {
+      imageUrl: "./img5.webp",
+      text: "Immersive VR Experiences",
+    },
+    {
+      imageUrl: "./img6.webp",
+      text: "Crypto Payment Options",
+    },
+    {
+      imageUrl: "./img7.webp",
+      text: "Personalized Event Recommendations",
+    },
+  ];
   const handleBuyTicket = (occasion) => {
     setSelectedOccasion(occasion);
     setIsModalVisible(true);
@@ -22,6 +53,11 @@ const HomePage = ({ state }) => {
     setIsModalVisible(false);
     setSelectedOccasion(null);
   };
+
+  for (let i = 0; i < 5; i++) {
+    const index = (currentIndex + i) % locations.length;
+    visibleCards.push(locations[index]);
+  }
 
   const fetchAllEvents = async () => {
     if (!contract) return;
@@ -52,7 +88,10 @@ const HomePage = ({ state }) => {
   };
   // Handle scroll event
   useEffect(() => {
+    // Fetch all events (existing functionality)
     fetchAllEvents();
+
+    // Handle scroll for opacity (existing functionality)
     const handleScroll = () => {
       const scrollY = window.scrollY;
       const fadeStart = 0; // Start fading immediately
@@ -64,24 +103,28 @@ const HomePage = ({ state }) => {
       setOpacity(newOpacity);
     };
 
+    // Add scroll event listener for opacity (existing functionality)
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+
+    // Auto-transition logic for the cards
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % locations.length);
+    }, 3000); // Adjust the interval duration (3 seconds in this case)
+
+    // Cleanup function
+    return () => {
+      // Remove scroll event listener for opacity
+      window.removeEventListener("scroll", handleScroll);
+
+      // Clear auto-transition interval
+      clearInterval(interval);
+    };
   }, []);
 
-  // Dummy data for locations and events
-  const locations = ["New York", "Los Angeles", "Chicago", "Houston"];
-  const events = [
-    "Marathon Movie Night",
-    "Oscar Special",
-    "Horror Fest",
-    "Kids Carnival",
-  ];
-
   return (
-    <div className="min-h-screen bg-black text-white">
-      {/* Banner Section */}
+    <div className="min-h-screen bg-black text-white flex flex-col align-center">
       <div
-        className="relative h-[400px] transition-opacity duration-500"
+        className="relative h-[400px] w-screen transition-opacity duration-500"
         style={{ opacity }}
       >
         <img
@@ -91,23 +134,34 @@ const HomePage = ({ state }) => {
         />
         <div className="absolute inset-0 bg-opacity-50 flex items-center pl-20">
           <div className="space-y-4">
-              <button className="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition-colors duration-300">
+            <button className="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition-colors duration-300">
               <Link to="/events">Book now</Link>
-              </button>
-              <button className=" border border-white text-white px-6 py-3 rounded-lg bg-blue-600 text-black transition-colors duration-300">
+            </button>
+            <button className="border border-white text-white px-6 py-3 rounded-lg bg-blue-600 hover:bg-blue-700 transition-colors duration-300">
               <Link to="/events">Explore Events</Link>
-              </button>
+            </button>
           </div>
         </div>
       </div>
 
       {/* Location-Based Cards Section */}
-      <section className="container mx-auto px-6 py-12">
-        <h2 className="text-3xl font-bold mb-8">Movies Near You</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-          {locations.map((location, index) => (
-            <LocationCard key={index} location={location} />
-          ))}
+      <section className="w-screen py-12 rounded-2xl">
+        <div className="overflow-hidden">
+          <div
+            className="flex gap-6 p-4 transition-transform duration-1000 ease-in-out"
+            style={{
+              transform: `translateX(-${currentIndex * (50 / 5)}%)`, // Slide cards horizontally
+            }}
+          >
+            {locations.map((location, index) => (
+              <div key={index} className="w-120 flex-shrink-0 rounded-2xl">
+                <LocationCard
+                  txt={location.text}
+                  imageUrl={location.imageUrl}
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -121,7 +175,7 @@ const HomePage = ({ state }) => {
           className="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-md transition"
           onClick={() => router.push("/events")} // Ensure `router` is initialized properly
         >
-          <Link to="/events" >Explore All Events</Link>
+          <Link to="/events">Explore All Events</Link>
         </button>
       </div>
 
@@ -171,7 +225,6 @@ const HomePage = ({ state }) => {
         ))}
       </div>
 
-      {/* Antd Modal */}
       <Modal
         title="Select Seats"
         visible={isModalVisible}
