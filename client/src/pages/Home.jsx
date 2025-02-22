@@ -16,31 +16,31 @@ const HomePage = ({ state }) => {
   const { contract } = state;
   const locations = [
     {
-      imageUrl: "./banner.png",
+      imageUrl: "./img1.webp",
       text: "Buy Tickets Easily",
     },
     {
-      imageUrl: "./banner.png",
+      imageUrl: "./img2.webp",
       text: "List Your Events",
     },
     {
-      imageUrl: "./banner.png",
+      imageUrl: "./img3.webp",
       text: "Resell Tickets Safely",
     },
     {
-      imageUrl: "./banner.png",
+      imageUrl: "./img4.webp",
       text: "Rebuy Sold-Out Tickets",
     },
     {
-      imageUrl: "./banner.png",
+      imageUrl: "./img5.webp",
       text: "Immersive VR Experiences",
     },
     {
-      imageUrl: "./banner.png",
+      imageUrl: "./img6.webp",
       text: "Crypto Payment Options",
     },
     {
-      imageUrl: "./banner.png",
+      imageUrl: "./img7.webp",
       text: "Personalized Event Recommendations",
     },
   ];
