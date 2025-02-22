@@ -12,6 +12,7 @@ import ContactUs from "./components/ContactUs";
 import Resale from "./pages/Resale";
 import MyTickets from "./pages/MyTickets";
 import Navbar from "./components/Navbar"; // New Navbar Component
+import AIChatButton from "./components/AIChatButton";
 
 export default function App() {
   const [account, setAccount] = useState("");
@@ -56,7 +57,7 @@ export default function App() {
     <Router>
       <div className="min-h-screen bg-gray-900 text-white">
         <Navbar account={account} connectWallet={connectWallet} state={state}/>
-
+        <AIChatButton account={account}  state={state}/>
         {/* Routing Configuration */}
         <Routes>
           <Route path="/" element={<Home state={state} />} />
