@@ -30,7 +30,7 @@ const Events = ({ state, account }) => {
           date: occasion[5],
           time: occasion[6],
           location: occasion[7],
-          vrUrl: occasion[8],
+          bannerImage: occasion[8],
         });
       }
 
@@ -39,7 +39,6 @@ const Events = ({ state, account }) => {
       console.error("Error fetching events:", error);
     }
   };
-
 
   const handleBuyTicket = (occasion) => {
     setSelectedOccasion(occasion);
@@ -50,53 +49,47 @@ const Events = ({ state, account }) => {
     setIsModalVisible(false);
     setSelectedOccasion(null);
   };
-  const uploadVrVideo =(e)=>{
-    e.preventDefault()
-    
-  }
 
   return (
     <div className="min-h-screen bg-gray-900 text-white py-10">
       <h2 className="text-3xl font-bold text-center mb-8">Upcoming Events</h2>
 
-      <div className="flex flex-wrap justify-center gap-6 px-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-6 bg-black text-white">
         {occasions.map((occasion, index) => (
           <motion.div
             key={index}
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: index * 0.1 }}
-            className="w-full sm:w-80 p-6 bg-gray-800 rounded-lg shadow-xl hover:scale-105 transition-all"
+            className="p-6 bg-gray-900 rounded-lg shadow-xl hover:scale-105 transition-all"
           >
-            {/* VR Video Preview */}
+            {/* Event Image */}
             <div className="relative w-full h-48 overflow-hidden rounded-lg">
-              <video
-                src={occasion.vrUrl}
+              <img
+                src={occasion.bannerImage}
+                alt="Event Banner"
                 className="w-full h-full object-cover"
-                controls
               />
             </div>
 
             {/* Event Details */}
-            <h3 className="text-xl font-bold mt-4">{occasion.name}</h3>
-            <p className="text-sm text-gray-400 mt-1">{occasion.location}</p>
+            <h3 className="text-xl font-bold mt-4 text-white text-center">{occasion.name}</h3>
+            <p className="text-sm text-gray-400 text-center">{occasion.location}</p>
+            <p className="text-xs text-gray-500 text-center mt-1">{occasion.date} | {occasion.time}</p>
 
-            <div className="mt-3 flex justify-between text-sm">
-              <span className="bg-green-500 px-3 py-1 rounded-md">
+            {/* Price and Tickets Info */}
+            <div className="mt-3 flex justify-center text-sm">
+              <span className="bg-green-600 px-3 py-1 rounded-md text-white mr-2">
                 {occasion.cost} ETH
               </span>
-              <span className="bg-blue-500 px-3 py-1 rounded-md">
-                {occasion.maxTickets}/{occasion.remainingTickets} Tickets Left
+              <span className="bg-blue-600 px-3 py-1 rounded-md text-white">
+                {occasion.remainingTickets} / {occasion.maxTickets} Tickets Left
               </span>
-            </div>
-
-            <div className="mt-3 text-sm">
-              📅 {occasion.date} ⏰ {occasion.time}
             </div>
 
             {/* Purchase Button */}
             <button
-              className="mt-4 w-full py-2 bg-indigo-600 hover:bg-indigo-500 rounded-md transition"
+              className="mt-4 w-full py-2 bg-indigo-700 hover:bg-indigo-600 rounded-md transition"
               onClick={() => handleBuyTicket(occasion)}
             >
               Buy Ticket
@@ -114,7 +107,7 @@ const Events = ({ state, account }) => {
         width={800}
       >
         {selectedOccasion && (
-          <SeatSelectionModal occasion={selectedOccasion} onClose={handleModalClose} state={state}/>
+          <SeatSelectionModal occasion={selectedOccasion} onClose={handleModalClose} state={state} />
         )}
       </Modal>
     </div>
