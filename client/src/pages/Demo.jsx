@@ -19,11 +19,16 @@ const Demo = ({state,account}) => {
         const tx = await contract.getUserTickets(account)
         console.log(tx)
     }
+    const scan = async()=>{
+        const tx = await contract.ticketExhausted(1,13)
+        console.log(tx)
+    }
   return (
     <div>
         <button onClick={buyTicket}>Buy</button>
         <button onClick={getSeatsTaken}>Get</button>\
         <button onClick={accessProfile}>Access</button>
+        <button onClick={scan}>Scan</button>
 
     </div>
   )
