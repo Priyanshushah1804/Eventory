@@ -24,7 +24,7 @@ export default function App() {
   });
 
   async function connectWallet() {
-    const contractAddress = "0xF97C4d0F9F716C360931D012d5fCD5524A53286D";
+    const contractAddress = "0x947CfA21d4afC66f1111D5a74865B8B9ba490C9E";
     const contractABI = abi.abi;
 
     try {
