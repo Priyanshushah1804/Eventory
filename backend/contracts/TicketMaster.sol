@@ -30,6 +30,8 @@ contract TicketMaster is ERC721, Ownable {
     mapping(uint256 => mapping(uint256 => bool)) public resaleAllowed;
     mapping(address => uint256[]) public creatorEvents;
 
+    mapping(uint256 => mapping(uint256 => uint256)) public seatToTokenId;
+
     constructor() ERC721("Token", "Ticket") Ownable(msg.sender) {}
 
     function list(
@@ -59,9 +61,12 @@ contract TicketMaster is ERC721, Ownable {
         hasBought[_id][msg.sender] = true;
         seatTaken[_id][_seat] = msg.sender;
         seatsTaken[_id].push(_seat);
-        resaleAllowed[_id][totalSupply] = true;
+        resaleAllowed[_id][_seat] = false;
+        ticketExhausted[_id][_seat] = false;
 
         _safeMint(msg.sender, totalSupply);
+        seatToTokenId[_id][_seat] = totalSupply; // ✅ Store correct token ID for seat
+
     }
 
     function getOccasion(uint256 _id) public view returns (Occasion memory) {
@@ -106,28 +111,41 @@ contract TicketMaster is ERC721, Ownable {
         require(_eventId != 0 && _eventId <= totalOccasions, "Invalid event ID");
         require(seatTaken[_eventId][_seatId] != address(0), "Seat not occupied");
 
-        address ticketHolder = seatTaken[_eventId][_seatId];
-        uint256 ticketId = uint256(uint160(ticketHolder));
+        require(!ticketExhausted[_eventId][_seatId], "Ticket already used");
 
-        require(!ticketExhausted[_eventId][ticketId], "Ticket already used");
-
-        ticketExhausted[_eventId][ticketId] = true;
-        resaleAllowed[_eventId][ticketId] = false;
+        ticketExhausted[_eventId][_seatId] = true;
+        resaleAllowed[_eventId][_seatId] = false;
     }
 
-    function enableResale(uint256 _eventId, uint256 _ticketId) public {
-        require(ownerOf(_ticketId) == msg.sender, "Not the owner of the ticket");
-        require(!ticketExhausted[_eventId][_ticketId], "Ticket already used");
-        resaleAllowed[_eventId][_ticketId] = true;
+    function enableResale(uint256 _eventId, uint256 _seatId) public {
+        require(seatTaken[_eventId][_seatId] == msg.sender, "Not the owner of the ticket");
+        require(!ticketExhausted[_eventId][_seatId], "Ticket already used");
+        resaleAllowed[_eventId][_seatId] = true;
     }
 
-    function resellTicket(address _to, uint256 _eventId, uint256 _ticketId) public {
-        require(resaleAllowed[_eventId][_ticketId], "Resale not allowed");
-        require(!ticketExhausted[_eventId][_ticketId], "Ticket already used");
+function buyResaleTicket(uint256 _eventId, uint256 _ticketId) public payable {
+    require(resaleAllowed[_eventId][_ticketId], "Resale not allowed");
+    require(!ticketExhausted[_eventId][_ticketId], "Ticket already used");
 
-        _transfer(msg.sender, _to, _ticketId);
-        resaleAllowed[_eventId][_ticketId] = false;
-    }
+    uint256 tokenId = seatToTokenId[_eventId][_ticketId];
+    address currentOwner = ownerOf(tokenId);
+    require(currentOwner != address(0), "Invalid ticket");
+    require(currentOwner != msg.sender, "Cannot buy your own ticket");
+
+    uint256 ticketPrice = occasions[_eventId].cost;
+    require(msg.value == ticketPrice, "Incorrect payment amount");
+
+    // Transfer payment to the current owner
+    (bool sent, ) = payable(currentOwner).call{value: ticketPrice}("");
+    require(sent, "Payment transfer failed");
+
+    // Transfer ticket ownership to the buyer
+    _transfer(currentOwner, msg.sender, tokenId);
+    seatTaken[_eventId][_ticketId] = msg.sender;
+
+    resaleAllowed[_eventId][_ticketId] = false; // Disable resale
+
+}
 
     function setVRVideo(uint256 _id, string memory _vrVideo) public {
         require(_id != 0 && _id <= totalOccasions, "Invalid occasion ID");
