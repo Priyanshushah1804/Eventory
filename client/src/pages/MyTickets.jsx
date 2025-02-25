@@ -233,7 +233,7 @@ const TicketCard = ({ ticket, onResell, onViewAR, index = 0, isExhausted,contrac
               <QRCode
                 style={{ width: "100px", height: "80px", overflow: "visible", border: "none" }}
                 errorLevel="H"
-                value={`${window.location.origin}/scanTickets/${ticket.id}/${ticket.seat}`}
+                value={`${window.location.origin}/scanTicket/${ticket.id}/${ticket.seat}`}
                 icon="./logo.webp"
               />
             </div>
