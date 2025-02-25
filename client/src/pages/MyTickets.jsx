@@ -77,13 +77,13 @@ const MyTickets = ({ state, account }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
-      <h1 className="text-2xl font-bold mb-4 text-gray-800">🎟️ My Tickets</h1>
+    <div className="min-h-screen p-6 py-10">
+      <h2 className="text-3xl font-bold text-center mb-8">My Events</h2>
 
       {loading ? (
-        <p className="text-gray-600">Loading your tickets...</p>
+        <p className="text-center">Loading your tickets...</p>
       ) : tickets.length === 0 ? (
-        <p className="text-gray-600">You have no tickets.</p>
+        <p className="text-center">You have no tickets.</p>
       ) : (
         <div className="flex flex-wrap gap-6">
           {tickets.map((ticket, index) => (

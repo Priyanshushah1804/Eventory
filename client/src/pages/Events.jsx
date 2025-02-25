@@ -54,14 +54,14 @@ const Events = ({ state, account }) => {
     <div className="min-h-screen bg-gray-900 text-white py-10">
       <h2 className="text-3xl font-bold text-center mb-8">Upcoming Events</h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-6 bg-black text-white">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-6 text-white">
         {occasions.map((occasion, index) => (
           <motion.div
             key={index}
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: index * 0.1 }}
-            className="p-6 bg-gray-900 rounded-lg shadow-xl hover:scale-105 transition-all"
+            className="p-6 bg-black rounded-lg shadow-xl hover:scale-105 transition-all"
           >
             {/* Event Image */}
             <div className="relative w-full h-48 overflow-hidden rounded-lg">
@@ -83,7 +83,7 @@ const Events = ({ state, account }) => {
                 {occasion.cost} ETH
               </span>
               <span className="bg-blue-600 px-3 py-1 rounded-md text-white">
-                {occasion.remainingTickets} / {occasion.maxTickets} Tickets Left
+              {occasion.maxTickets} / {occasion.remainingTickets} Tickets Left
               </span>
             </div>
 
