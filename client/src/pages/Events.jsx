@@ -11,7 +11,7 @@ const Events = ({ state, account }) => {
 
   useEffect(() => {
     fetchAllEvents();
-  }, []);
+  }, [state]);
 
   const fetchAllEvents = async () => {
     if (!contract) return;

@@ -24,7 +24,7 @@ const Resale = ({ state, account }) => {
         };
 
         fetchResaleTickets();
-    }, [contract]);
+    }, [state]);
 
     const buyResaleTicket = async (eventId, seatId) => {
         if (!contract || !account) return;

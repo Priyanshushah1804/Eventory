@@ -119,7 +119,7 @@ const HomePage = ({ state }) => {
       // Clear auto-transition interval
       clearInterval(interval);
     };
-  }, []);
+  }, [state]);
 
   return (
     <div className="min-h-screen bg-black text-white flex flex-col align-center">

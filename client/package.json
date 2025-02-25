@@ -12,7 +12,7 @@
   "dependencies": {
     "@google/generative-ai": "^0.22.0",
     "@tailwindcss/vite": "^4.0.7",
-    "antd": "^5.24.1",
+    "antd": "^5.24.2",
     "axios": "^1.7.9",
     "client2": "file:",
     "ethers": "^6.13.5",
