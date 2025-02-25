@@ -63,15 +63,10 @@ export default function Navbar({ account, connectWallet, state }) {
   ];
 
   return (
-    <nav className="relative flex justify-between items-center py-4 px-6 shadow-md bg-white dark:bg-gray-800">
-
+    <nav className="hidden md:flex relative justify-between items-center py-4 px-6 shadow-md bg-white dark:bg-gray-800">
       <ul className="flex space-x-6 relative">
         <li>
-        <img
-          src="./logo.webp"
-          alt="Logo"
-          className="h-12 w-auto" 
-        />
+          <img src="./logo.webp" alt="Logo" className="h-12 w-auto" />
         </li>
         {links.map((item) => {
           const isActive = location.pathname === item.path;
@@ -109,51 +104,69 @@ export default function Navbar({ account, connectWallet, state }) {
       <div className="relative">
         <input
           type="text"
-          placeholder="Search..." 
+          placeholder="Search..."
           value={searchQuery}
           onChange={handleSearchChange}
           className="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         {/* Dropdown */}
         {showDropdown && (
-           <div className="absolute mt-6 top-full left-0 mt-2 w-[40vh] bg-gray-950/80 border border-gray-800 rounded-2xl shadow-xl z-50 overflow-hidden backdrop-blur-lg transition-all duration-300">
-           <ul className="divide-y divide-gray-800">
-             {dropdownData.length > 0 ? (
-               dropdownData.map((occasion) => (
-                 <li
-                   key={occasion.id}
-                   className="p-4 flex flex-col space-y-2 cursor-pointer transition-all duration-300 hover:bg-gray-900/70 hover:scale-[1.02] rounded-lg"
-                 >
-                   {/* Occasion Name */}
-                   <h3 className="text-lg font-semibold text-white tracking-wide">{occasion.name}</h3>
-         
-                   {/* Occasion Details */}
-                   <div className="text-sm text-gray-400 space-y-1">
-                     <p>
-                       <span className="font-medium text-blue-400">💰 Cost:</span> {occasion.cost} ETH
-                     </p>
-                     <p>
-                       <span className="font-medium text-green-400">🎟 Tickets:</span> 
-                       {occasion.remainingTickets} / {occasion.maxTickets} remaining
-                     </p>
-                     <p>
-                       <span className="font-medium text-yellow-400">📅 Date:</span> {occasion.date}
-                     </p>
-                     <p>
-                       <span className="font-medium text-pink-400">⏰ Time:</span> {occasion.time}
-                     </p>
-                     <p>
-                       <span className="font-medium text-purple-400">📍 Location:</span> {occasion.location}
-                     </p>
-                   </div>
-                 </li>
-               ))
-             ) : (
-               <li className="p-4 text-gray-500 text-center">No results found</li>
-             )}
-           </ul>
-         </div>
-         
+          <div className="absolute mt-6 top-full left-0 mt-2 w-[40vh] bg-gray-950/80 border border-gray-800 rounded-2xl shadow-xl z-50 overflow-hidden backdrop-blur-lg transition-all duration-300">
+            <ul className="divide-y divide-gray-800">
+              {dropdownData.length > 0 ? (
+                dropdownData.map((occasion) => (
+                  <li
+                    key={occasion.id}
+                    className="p-4 flex flex-col space-y-2 cursor-pointer transition-all duration-300 hover:bg-gray-900/70 hover:scale-[1.02] rounded-lg"
+                  >
+                    {/* Occasion Name */}
+                    <h3 className="text-lg font-semibold text-white tracking-wide">
+                      {occasion.name}
+                    </h3>
+
+                    {/* Occasion Details */}
+                    <div className="text-sm text-gray-400 space-y-1">
+                      <p>
+                        <span className="font-medium text-blue-400">
+                          💰 Cost:
+                        </span>{" "}
+                        {occasion.cost} ETH
+                      </p>
+                      <p>
+                        <span className="font-medium text-green-400">
+                          🎟 Tickets:
+                        </span>
+                        {occasion.remainingTickets} / {occasion.maxTickets}{" "}
+                        remaining
+                      </p>
+                      <p>
+                        <span className="font-medium text-yellow-400">
+                          📅 Date:
+                        </span>{" "}
+                        {occasion.date}
+                      </p>
+                      <p>
+                        <span className="font-medium text-pink-400">
+                          ⏰ Time:
+                        </span>{" "}
+                        {occasion.time}
+                      </p>
+                      <p>
+                        <span className="font-medium text-purple-400">
+                          📍 Location:
+                        </span>{" "}
+                        {occasion.location}
+                      </p>
+                    </div>
+                  </li>
+                ))
+              ) : (
+                <li className="p-4 text-gray-500 text-center">
+                  No results found
+                </li>
+              )}
+            </ul>
+          </div>
         )}
       </div>
 
