@@ -72,7 +72,8 @@ const ScanTicket = ({ state, connectWallet, account }) => {
   }, [contract, account]);
 
   return (
-    <>
+    
+    <div className="flex flex-col justify-center items-center space-y-8">
      <button
         onClick={connectWallet}
         className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition flex md:hidden"
@@ -91,7 +92,7 @@ const ScanTicket = ({ state, connectWallet, account }) => {
         contract={contract}
         admin={admin}
         />}
-    </>
+    </div>
   );
 };
 
