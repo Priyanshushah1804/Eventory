@@ -1,10 +1,6 @@
 {
   "dependencies": {
-<<<<<<< HEAD
-    "@google/generative-ai": "^0.22.0"
-=======
     "@google/generative-ai": "^0.22.0",
     "qrcode.react": "^4.2.0"
->>>>>>> 133ddb4317c55878a026244cd0efadc68ff794cd
   }
 }
