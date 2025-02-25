@@ -216,14 +216,6 @@ const HomePage = ({ state }) => {
           </div>
         </div>
       </section>
-      <section className="w-screen py-12 bg-gradient-to-r from-purple-500 to-indigo-600 text-center">
-        <h1 className="text-5xl font-extrabold text-white mb-4">Explore Events Around You</h1>
-        <p className="text-lg text-gray-200">Discover and book tickets for the best events happening near you.</p>
-      </section>
-
-      <CardList />
-      <PlanEventsSection />
-      
       {/* Event-Based Cards Section */}
       <div className="flex justify-between items-center mb-8 px-10">
         <h2 className="text-3xl font-bold">Upcoming Events</h2>
@@ -283,6 +275,15 @@ const HomePage = ({ state }) => {
         </motion.div>
         ))}
       </div>
+      <section className="w-screen mt-15 py-12 bg-gradient-to-r from-purple-500 to-indigo-600 text-center">
+        <h1 className="text-5xl font-extrabold text-white mb-4">Explore Events Around You</h1>
+        <p className="text-lg text-gray-200">Discover and book tickets for the best events happening near you.</p>
+      </section>
+
+      <CardList />
+      <PlanEventsSection />
+      
+      
 
       <Modal
         title="Select Seats"
