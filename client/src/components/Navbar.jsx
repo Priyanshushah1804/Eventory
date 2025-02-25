@@ -60,6 +60,7 @@ export default function Navbar({ account, connectWallet, state }) {
     { name: "Events", path: "/events" },
     { name: "Resale", path: "/resale" },
     ...(account ? [{ name: "My Tickets", path: "/myTickets" }] : []),
+    ...(account ? [{ name: "My Events", path: "/myEvents" }] : []),
   ];
 
   return (
