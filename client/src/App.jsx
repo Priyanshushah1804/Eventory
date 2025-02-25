@@ -7,7 +7,6 @@ import Register from "./pages/Register";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Events from "./pages/Events";
-import Demo from "./pages/Demo";
 import ContactUs from "./components/ContactUs";
 import Resale from "./pages/Resale";
 import MyTickets from "./pages/MyTickets";
