@@ -14,6 +14,7 @@ import MyTickets from "./pages/MyTickets";
 import Navbar from "./components/Navbar"; // New Navbar Component
 import AIChatButton from "./components/AIChatButton";
 import MyEvents from "./pages/MyEvents";
+import ScanTicket from "./components/ScanTicket";
 
 export default function App() {
   const [account, setAccount] = useState("");
@@ -71,6 +72,7 @@ export default function App() {
           <Route path="/resale" element={<Resale state={state} account={account} />} />
           <Route path="/myTickets" element={<MyTickets state={state} account={account} />} />
           <Route path="/myEvents" element={<MyEvents state={state} account={account} />} />
+          <Route path="/scanTicket/:id/:seatId" element={<ScanTicket state={state} account={account} connectWallet={connectWallet}/>} />
         </Routes>
       </div>
     </Router>
