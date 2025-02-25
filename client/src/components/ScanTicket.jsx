@@ -75,7 +75,7 @@ const ScanTicket = ({ state, connectWallet, account }) => {
     <>
      <button
         onClick={connectWallet}
-        className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
+        className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition flex md:hidden"
       >
         {account
           ? `Connected: ${account.slice(0, 6)}...${account.slice(-4)}`
@@ -239,11 +239,11 @@ const TicketCard = ({ ticket, onResell, onViewAR, index = 0, isExhausted,contrac
                   {admin &&!ticket.isExhausted && <button onClick={allowEntry} className="px-3 py-1 rounded-md text-xs font-semibold transition-colors bg-red-800 text-white-500 ">Allow Entry</button>}
                 </div>
                 <QRCode
-                  style={{ width: "100px", height: "80px", overflow: "visible", border: "none" }}
-                  errorLevel="H"
-                  value="https://ant.design/"
-                  icon="./logo.webp"
-                />
+                style={{ width: "100px", height: "80px", overflow: "visible", border: "none" }}
+                errorLevel="H"
+                value={`${window.location.origin}/${ticket.id}/${ticket.seat}`}
+                icon="./logo.webp"
+              />
               </div>
             </div>
   

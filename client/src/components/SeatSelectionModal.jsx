@@ -29,7 +29,7 @@ const SeatSelectionModal = ({ occasion, onClose, state }) => {
   }, [occasion]);
   const buyTicket=async(id,seat)=>{
     const tx = await contract.mint(id,seat, { value:ethers.parseEther(occasion.cost.toString()) })
-    console.log(tx)
+    alert("Ticket Booked")
     setSelectedSeats([])
     onClose()
   }
