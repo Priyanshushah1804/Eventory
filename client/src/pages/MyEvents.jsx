@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { ethers } from 'ethers';
 
 const MyEvents = ({ state, account }) => {
     const { contract } = state;
@@ -81,31 +82,90 @@ const MyEvents = ({ state, account }) => {
             <h2 className="text-3xl font-bold text-center mb-8">My Events</h2>
             {/* <button className="bg-blue-500 text-white px-4 py-2 rounded-md" onClick={getMyEvents}>Get My Events</button> */}
 
-                {myEvents.length > 0 ? (
-                    myEvents.map((event) => (
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
-                        <div key={event.id} className="border rounded-lg shadow-md p-4 relative">
-                            <h3 className="text-lg font-semibold">{event.name}</h3>
-                            <p>Cost: {event.cost} ETH</p>
-                            <p>Tickets: {event.tickets}/{event.maxTickets}</p>
-                            <p>Date: {event.date}</p>
-                            <p>Time: {event.time}</p>
-                            <p>Location: {event.location}</p>
-                            <img src={event.bannerImage} alt={event.name} className="w-full h-48 object-cover rounded-md mt-2" />
-                            {event.vrVideo && (
-                                <div className="relative group mt-2">
-                                    <p className="text-blue-500 cursor-pointer">VR Video Available</p>
-                                    <video src={event.vrVideo} className="hidden group-hover:block absolute top-0 left-0 w-full h-40 rounded-md" controls/>
-                                </div>
-                            )}
-                            <input type="file" accept="video/*" className="mt-2" onChange={handleFileChange} />
-                            <button className="bg-green-500 text-white px-4 py-2 mt-2 rounded-md" onClick={() => uploadVRVideo(event.id)}>Upload VR Video</button>
-                        </div>
+            {myEvents.length > 0 ? (
+  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
+    {myEvents.map((event) => (
+      <div
+        key={event.id}
+        className="border rounded-lg shadow-lg bg-white text-black relative overflow-hidden group"
+      >
+        {/* Banner Image with Overlay */}
+        <div className="relative w-full h-48">
+          <img
+            src={event.bannerImage}
+            alt={event.name}
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent p-4">
+            <span className="bg-yellow-500 text-white text-xs px-2 py-1 rounded-lg">
+              6.5/10
+            </span>
+            <span className="bg-pink-500 text-white text-xs px-2 py-1 rounded-lg ml-2">
+              Bestseller
+            </span>
+            <h3 className="text-lg font-semibold text-white mt-2">
+              {event.name}
+            </h3>
+          </div>
+        </div>
+
+        {/* Event Details */}
+        <div className="p-4 space-y-2">
+          <p className="text-sm text-gray-600">{event.location}</p>
+          <p className="text-sm text-gray-600">📅 {event.date} | ⏰ {event.time}</p>
+
+          {/* Price & Buy Button Section */}
+          <div className="flex justify-between items-center mt-3">
+            <span className="text-lg font-bold text-purple-600">
+              From {ethers.formatEther(event.cost)} ETH
+            </span>
+            <button
+              className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition"
+              onClick={() => handleBuyTicket(event)}
+            >
+              Buy Ticket
+            </button>
+          </div>
+
+          {/* VR Video Section (Only Show on Hover) */}
+          {event.vrVideo ? (
+            <div className="relative mt-4">
+              <p className="text-blue-500">🎥 VR Video Available</p>
+              <div className="absolute top-0 left-0 w-full h-full hidden group-hover:block">
+                <video
+                  src={event.vrVideo}
+                  className="w-full h-40 rounded-md border border-gray-300 shadow-md mt-2"
+                  controls
+                />
+              </div>
             </div>
-                    ))
-                ) : (
-                    <p className="text-center">No events found</p>
-                )}
+          ) : (
+            // Show File Upload & Upload Button only if no VR Video
+            <div className="mt-4 flex items-center space-x-2">
+              <input
+                type="file"
+                accept="video/*"
+                className="border border-gray-300 text-sm p-2 rounded-md bg-gray-100 flex-1"
+                onChange={handleFileChange}
+              />
+              <button
+                className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md transition"
+                onClick={() => uploadVRVideo(event.id)}
+              >
+                Upload VR
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    ))}
+  </div>
+) : (
+  <p className="text-center text-gray-400">No events found</p>
+)}
+
+
+
         </div>
     );
 };
