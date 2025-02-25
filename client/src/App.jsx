@@ -7,7 +7,6 @@ import Register from "./pages/Register";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import Events from "./pages/Events";
-import Demo from "./pages/Demo";
 import ContactUs from "./components/ContactUs";
 import Resale from "./pages/Resale";
 import MyTickets from "./pages/MyTickets";
@@ -66,7 +65,6 @@ export default function App() {
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/events" element={<Events state={state} account={account} />} />
-          <Route path="/demo" element={<Demo state={state} account={account} />} />
           <Route path="/contactus" element={<ContactUs />} />
           <Route path="/resale" element={<Resale state={state} account={account} />} />
           <Route path="/myTickets" element={<MyTickets state={state} account={account} />} />
