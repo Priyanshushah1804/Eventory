@@ -43,10 +43,12 @@ const Resale = ({ state, account }) => {
         fetchResaleTickets();
     }, [contract]);
 
-    const buyResaleTicket = async (eventId, seatId, priceInWei) => {
+    const buyResaleTicket = async (eventId, seatId, priceInEth) => {
 
 
         if (!contract || !account) return;
+        const priceInWei = ethers.parseEther(priceInEth); // ✅ Convert ETH to Wei safely
+
 
 
         try {
@@ -84,7 +86,7 @@ const Resale = ({ state, account }) => {
                             <div className="flex justify-between items-center mt-4">
                                 <p className="text-xl font-bold text-blue-600">{ticket.price} ETH</p>
                                 <button
-                                    onClick={() => buyResaleTicket(ticket.eventId, ticket.seatId, ethers.formatEther(ticket.price))}
+                                    onClick={() => buyResaleTicket(ticket.eventId, ticket.seatId, ticket.price.toString())}
                                     className="bg-blue-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-600 transition"
                                 >
                                     Buy Ticket
