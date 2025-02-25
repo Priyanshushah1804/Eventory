@@ -1,3 +1,4 @@
+import { ethers } from 'ethers';
 import React, { useEffect, useState } from 'react';
 
 const Resale = ({ state, account }) => {
@@ -43,7 +44,10 @@ const Resale = ({ state, account }) => {
     }, [contract]);
 
     const buyResaleTicket = async (eventId, seatId, priceInWei) => {
+
+
         if (!contract || !account) return;
+
 
         try {
             await contract.buyResaleTicket(eventId, seatId, { value: priceInWei });
@@ -80,19 +84,13 @@ const Resale = ({ state, account }) => {
                             <div className="flex justify-between items-center mt-4">
                                 <p className="text-xl font-bold text-blue-600">{ticket.price} ETH</p>
                                 <button
-                                    onClick={() => buyResaleTicket(ticket.eventId, ticket.seatId, web3.utils.toWei(ticket.price, "ether"))}
+                                    onClick={() => buyResaleTicket(ticket.eventId, ticket.seatId, ethers.formatEther(ticket.price))}
                                     className="bg-blue-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-600 transition"
                                 >
                                     Buy Ticket
                                 </button>
                             </div>
 
-                            {ticket.vrVideo && (
-                                <a href={ticket.vrVideo} target="_blank" rel="noopener noreferrer"
-                                    className="block text-center text-blue-500 mt-2 hover:underline">
-                                    🎥 View VR Preview
-                                </a>
-                            )}
                         </div>
                     ))}
                 </div>
