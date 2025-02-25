@@ -10,6 +10,10 @@ module.exports = {
       url: process.env.ARBITRUM_SEPOLIA_URL, // Arbitrum Sepolia RPC URL
       accounts: [`0x${process.env.PRIVATE_KEY}`],
     },
+    sepolia: {
+        url: process.env.SEPOLIA_URL, // Arbitrum Sepolia RPC URL
+        accounts: [`0x${process.env.PRIVATE_KEY}`],
+      },
 
 
   },
