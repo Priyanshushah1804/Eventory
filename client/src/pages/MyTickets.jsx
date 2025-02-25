@@ -122,9 +122,10 @@ const TicketCard = ({ ticket, onResell, onViewAR, index = 0, isExhausted }) => {
     "bg-gradient-to-r from-pink-500 to-yellow-500",
     "bg-gradient-to-r from-orange-500 to-red-500",
   ];
-
+  const exhaustedGradient = "bg-gradient-to-r from-gray-900 via-gray-700 to-gray-800";
   // Use the index to select a gradient style; the pattern repeats every 4 cards.
-  const gradientClass = gradientStyles[index % gradientStyles.length];
+  const gradientClass = isExhausted ? exhaustedGradient : gradientStyles[index % gradientStyles.length];
+  
 
   return (
     <>
