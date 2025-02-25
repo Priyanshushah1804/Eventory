@@ -57,7 +57,7 @@ const AIChatButton = ({ account, state }) => {
           date: occasion[5],
           time: occasion[6],
           location: occasion[7],
-          vrUrl: occasion[8],
+          bannerImage: occasion[8],
         });
       }
       setOccasions(occasionsList);
@@ -151,44 +151,44 @@ const AIChatButton = ({ account, state }) => {
                     {message.text}
                     </div>
                     <div>{event && (
-                    <div className="w-full p-6 bg-gray-800 rounded-lg shadow-xl transition-all">
-                        {/* VR Video Preview */}
-                        <div className="relative w-full h-48 overflow-hidden rounded-lg">
-                          <video
-                            src={event.vrUrl}
-                            className="w-full h-full object-cover"
-                            controls
-                          />
-                        </div>
+                     <div className="bg-gray-800 rounded-xl shadow-md overflow-hidden text-white max-w-sm mx-auto border border-gray-700"
+                     >
+                       {/* Event Image */}
+                       <div className="relative w-full h-40 overflow-hidden rounded-t-xl">
+                         <img
+                           src={event.bannerImage}
+                           alt="Event Banner"
+                           className="w-full h-full object-cover"
+                         />
+                         <div className="absolute top-2 left-2 bg-yellow-500 text-black px-2 py-1 rounded-md text-xs font-semibold shadow">
+                           {event.cost} ETH
+                         </div>
+                       </div>
 
-                        {/* Event Details */}
-                        <h3 className="text-xl font-bold mt-4">{event.name}</h3>
-                        <p className="text-sm text-gray-400 mt-1">
-                          {event.location}
-                        </p>
+                       {/* Event Details */}
+                       <div className="p-3 bg-gray-900 rounded-b-xl text-sm">
+                         <h3 className="text-base font-bold">{event.name}</h3>
+                         <div className="flex flex-wrap items-center text-xs text-gray-400 mt-1 gap-2">
+                           <span className="bg-gray-700 px-2 py-1 rounded-md shadow-sm">BUSINESS</span>
+                           <span className="flex items-center">📅 {event.date}</span>
+                           <span className="flex items-center">📍 {event.location}</span>
+                         </div>
+                         <p className="text-xs text-gray-400 mt-2 line-clamp-2">{event.description}</p>
 
-                        <div className="mt-3 flex justify-between text-sm">
-                          <span className="bg-green-500 px-3 py-1 rounded-md">
-                            {event.cost} ETH
-                          </span>
-                          <span className="bg-blue-500 px-3 py-1 rounded-md">
-                            {event.remainingTickets}/{event.maxTickets} Tickets
-                            Left
-                          </span>
-                        </div>
-
-                        <div className="mt-3 text-sm">
-                          📅 {event.date} ⏰ {event.time}
-                        </div>
-
-                        {/* Purchase Button */}
-                        <button
-                          className="mt-4 w-full py-2 bg-indigo-600 hover:bg-indigo-500 rounded-md transition"
-                          onClick={() => handleBuyTicket(event)}
-                        >
-                          Buy Ticket
-                        </button>
-                    </div>
+                         {/* Price and Tickets Info */}
+                         <div className="mt-3 flex justify-between items-center">
+                           <span className="bg-green-600 px-2 py-1 rounded-md text-white text-xs shadow">
+                             {event.remainingTickets} / {event.maxTickets} Tickets Left
+                           </span>
+                           <button
+                             className="bg-indigo-700 hover:bg-indigo-600 px-3 py-1 rounded-md text-xs shadow"
+                             onClick={() => handleBuyTicket(event)}
+                           >
+                             Buy Ticket
+                           </button>
+                         </div>
+                       </div>
+                     </div>
                   )}</div>
                   </div>
                   {message.sender === "user" && (
@@ -197,7 +197,7 @@ const AIChatButton = ({ account, state }) => {
                       style={{ backgroundColor: "#1890ff", marginLeft: "8px" }}
                     />
                   )}
-                  
+
                 </div>
               );
             })}

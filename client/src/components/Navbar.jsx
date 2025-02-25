@@ -56,7 +56,6 @@ export default function Navbar({ account, connectWallet, state }) {
     { name: "About", path: "/about" },
     { name: "Contact Us", path: "/contactus" },
     { name: "Events", path: "/events" },
-    { name: "Demo", path: "/demo" },
     { name: "Resale", path: "/resale" },
     { name: "MyEvents", path: "/myEvents" },
     ...(account ? [{ name: "My Tickets", path: "/myTickets" }] : []),
@@ -71,7 +70,7 @@ export default function Navbar({ account, connectWallet, state }) {
         <img
           src="./logo.webp"
           alt="Logo"
-          className="h-12 w-auto" 
+          className="h-12 w-auto"
         />
         </li>
         {links.map((item) => {
@@ -110,7 +109,7 @@ export default function Navbar({ account, connectWallet, state }) {
       <div className="relative">
         <input
           type="text"
-          placeholder="Search..." 
+          placeholder="Search..."
           value={searchQuery}
           onChange={handleSearchChange}
           className="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -127,14 +126,14 @@ export default function Navbar({ account, connectWallet, state }) {
                  >
                    {/* Occasion Name */}
                    <h3 className="text-lg font-semibold text-white tracking-wide">{occasion.name}</h3>
-         
+
                    {/* Occasion Details */}
                    <div className="text-sm text-gray-400 space-y-1">
                      <p>
                        <span className="font-medium text-blue-400">💰 Cost:</span> {occasion.cost} ETH
                      </p>
                      <p>
-                       <span className="font-medium text-green-400">🎟 Tickets:</span> 
+                       <span className="font-medium text-green-400">🎟 Tickets:</span>
                        {occasion.remainingTickets} / {occasion.maxTickets} remaining
                      </p>
                      <p>
@@ -154,7 +153,7 @@ export default function Navbar({ account, connectWallet, state }) {
              )}
            </ul>
          </div>
-         
+
         )}
       </div>
 
