@@ -6,35 +6,47 @@ const Resale = ({ state, account }) => {
 
     useEffect(() => {
         const fetchResaleTickets = async () => {
-            if (contract) {
-                const totalOccasions = await contract.totalOccasions();
-                let resaleList = [];
+            if (!contract) return;
 
-                for (let i = 1; i <= totalOccasions; i++) {
-                    const seatsTaken = await contract.getSeatsTaken(i);
-                    for (let seat of seatsTaken) {
-                        const isResale = await contract.resaleAllowed(i, seat);
-                        if (isResale) {
-                            resaleList.push({ eventId: i, seatId: seat });
-                        }
+            const totalOccasions = await contract.totalOccasions();
+            let resaleList = [];
+
+            for (let i = 1; i <= totalOccasions; i++) {
+                const seatsTaken = await contract.getSeatsTaken(i);
+
+                for (let seat of seatsTaken) {
+                    const isResale = await contract.resaleAllowed(i, seat);
+                    if (isResale) {
+                        const occasion = await contract.getOccasion(i);
+                        const tokenId = await contract.seatToTokenId(i, seat);
+                        const ownerAddress = await contract.ownerOf(tokenId);
+
+                        resaleList.push({
+                            eventId: i,
+                            seatId: seat,
+                            eventName: occasion.name,
+                            price: Number(occasion[2]) / 1e18,
+                            date: occasion.date,
+                            time: occasion.time,
+                            location: occasion.location,
+                            bannerImage: occasion.bannerImage,
+                            vrVideo: occasion.vrVideo,
+                            ownerAddress,
+                        });
                     }
                 }
-                setResaleTickets(resaleList);
-                console.log(resaleList)
             }
+            setResaleTickets(resaleList);
         };
 
         fetchResaleTickets();
-    }, [state]);
+    }, [contract]);
 
-    const buyResaleTicket = async (eventId, seatId) => {
+    const buyResaleTicket = async (eventId, seatId, priceInWei) => {
         if (!contract || !account) return;
 
         try {
-            const ticketPrice = await contract.getOccasion(eventId);
-            const priceInWei = ticketPrice.cost;
-
-            await contract.buyResaleTicket(eventId, seatId,{value:priceInWei})
+            await contract.buyResaleTicket(eventId, seatId, { value: priceInWei });
             alert('Ticket purchased successfully!');
             window.location.reload();
         } catch (error) {
@@ -45,20 +57,47 @@ const Resale = ({ state, account }) => {
 
     return (
         <div className='py-10'>
-            <h2 className="text-3xl font-bold text-center mb-8">Resale</h2>
+            <h2 className="text-3xl font-bold text-center mb-8">Resale Tickets</h2>
             {resaleTickets.length > 0 ? (
-                <ul>
+                <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {resaleTickets.map((ticket, index) => (
-                        <li key={index}>
-                            Event ID: {ticket.eventId} - Seat ID: {ticket.seatId}
-                            <button onClick={() => buyResaleTicket(ticket.eventId, ticket.seatId)}>
-                                Buy
-                            </button>
-                        </li>
+                        <div key={index} className="bg-white shadow-lg rounded-xl p-6 transition hover:shadow-2xl">
+                            {ticket.bannerImage && (
+                                <img
+                                    src={ticket.bannerImage}
+                                    alt="Event Banner"
+                                    className="w-full h-40 object-cover rounded-lg mb-4"
+                                />
+                            )}
+
+                            <h3 className="text-lg font-semibold text-gray-900">{ticket.eventName}</h3>
+                            <p className="text-sm text-gray-600"><strong>Event ID:</strong> {ticket.eventId}</p>
+                            <p className="text-sm text-gray-600"><strong>Seat ID:</strong> {ticket.seatId}</p>
+                            <p className="text-sm text-gray-600"><strong>Location:</strong> {ticket.location}</p>
+                            <p className="text-sm text-gray-600"><strong>Date:</strong> {ticket.date} | <strong>Time:</strong> {ticket.time}</p>
+                            <p className="text-sm text-gray-600"><strong>Owner:</strong> {ticket.ownerAddress.substring(0, 6)}...{ticket.ownerAddress.slice(-4)}</p>
+
+                            <div className="flex justify-between items-center mt-4">
+                                <p className="text-xl font-bold text-blue-600">{ticket.price} ETH</p>
+                                <button
+                                    onClick={() => buyResaleTicket(ticket.eventId, ticket.seatId, web3.utils.toWei(ticket.price, "ether"))}
+                                    className="bg-blue-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-blue-600 transition"
+                                >
+                                    Buy Ticket
+                                </button>
+                            </div>
+
+                            {ticket.vrVideo && (
+                                <a href={ticket.vrVideo} target="_blank" rel="noopener noreferrer"
+                                    className="block text-center text-blue-500 mt-2 hover:underline">
+                                    🎥 View VR Preview
+                                </a>
+                            )}
+                        </div>
                     ))}
-                </ul>
+                </div>
             ) : (
-                <p className='text-center'>No tickets available for resale.</p>
+                <p className="text-center text-gray-500 text-lg">No tickets available for resale.</p>
             )}
         </div>
     );
