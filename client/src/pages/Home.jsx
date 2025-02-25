@@ -1,11 +1,55 @@
 import React, { useEffect, useState } from "react";
-import { Modal } from "antd";
+import { Modal, Carousel } from "antd";
 import SeatSelectionModal from "../components/SeatSelectionModal";
 import LocationCard from "../components/LocationCard";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
-// Custom Card Components
+// Carousel Component
+const Carousels = ({ opacity }) => {
+  const images = [
+    "./bg-1.png",
+    "./bg-2.png",
+    "./bg-3.png",
+    "./bg-4.png",
+    "./bg-5.png",
+  ];
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [images.length]);
+
+  return (
+    <div className="relative h-[400px] w-screen transition-opacity duration-500" style={{ opacity }}>
+      {images.map((src, index) => (
+        <div
+          key={index}
+          className={`absolute inset-0 transition-opacity duration-500 ${
+            index === currentIndex ? "opacity-100" : "opacity-0"
+          }`}
+        >
+          <img src={src} alt={`Movie Banner ${index + 1}`} className="w-full h-full object-cover" />
+        </div>
+      ))}
+      <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center pl-20">
+        <div className="space-y-4">
+          <button className="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition-colors duration-300">
+            <Link to="/events">Book now</Link>
+          </button>
+          <button className="border border-white text-white px-6 py-3 rounded-lg bg-blue-600 hover:bg-blue-700 transition-colors duration-300">
+            <Link to="/events">Explore Events</Link>
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// HomePage Component
 const HomePage = ({ state }) => {
   const [opacity, setOpacity] = useState(1);
   const [occasions, setOccasions] = useState([]);
@@ -86,63 +130,71 @@ const HomePage = ({ state }) => {
       console.error("Error fetching events:", error);
     }
   };
-  // Handle scroll event
+
   useEffect(() => {
-    // Fetch all events (existing functionality)
+    // Fetch all events
     fetchAllEvents();
 
-    // Handle scroll for opacity (existing functionality)
+    // Handle scroll for opacity
     const handleScroll = () => {
       const scrollY = window.scrollY;
       const fadeStart = 0; // Start fading immediately
       const fadeEnd = 400; // Fully faded out after scrolling 400px
 
-      // Calculate opacity based on scroll position
       let newOpacity = 1 - (scrollY - fadeStart) / (fadeEnd - fadeStart);
-      newOpacity = Math.max(0, Math.min(1, newOpacity)); // Clamp between 0 and 1
+      newOpacity = Math.max(0, Math.min(1, newOpacity));
       setOpacity(newOpacity);
     };
 
-    // Add scroll event listener for opacity (existing functionality)
     window.addEventListener("scroll", handleScroll);
 
-    // Auto-transition logic for the cards
+    // Auto-transition logic for the cards (locations carousel)
     const interval = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % locations.length);
-    }, 3000); // Adjust the interval duration (3 seconds in this case)
+    }, 3000);
 
-    // Cleanup function
     return () => {
-      // Remove scroll event listener for opacity
       window.removeEventListener("scroll", handleScroll);
-
-      // Clear auto-transition interval
       clearInterval(interval);
     };
   }, [state]);
 
+  const contentStyle = {
+    margin: 0,
+    height: '600px',
+    color: '#fff',
+    lineHeight: '160px',
+    textAlign: 'center',
+    background: '#364d79',
+   img: {
+    width: '100%',
+    height: '100%',
+    objectFit: 'fill',
+    objectPosition: 'center',
+
+  }};
+
+  const onChange = (currentSlide) => {
+    console.log(currentSlide);
+  }
+
   return (
     <div className="min-h-screen bg-black text-white flex flex-col align-center">
-      <div
-        className="relative h-[400px] w-screen transition-opacity duration-500"
-        style={{ opacity }}
-      >
-        <img
-          src="./banner.png"
-          alt="Movie Banner"
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-opacity-50 flex items-center pl-20">
-          <div className="space-y-4">
-            <button className="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 transition-colors duration-300">
-              <Link to="/events">Book now</Link>
-            </button>
-            <button className="border border-white text-white px-6 py-3 rounded-lg bg-blue-600 hover:bg-blue-700 transition-colors duration-300">
-              <Link to="/events">Explore Events</Link>
-            </button>
-          </div>
-        </div>
-      </div>
+      <Carousel autoplay autoplaySpeed={5000}>
+  <div>
+    <h3 style={contentStyle}><img src="./bg-4.png" alt="" /></h3>
+  </div>
+  <div>
+    <h3 style={contentStyle}><img src="./bg-1.png" alt="" /></h3>
+  </div>
+  <div>
+    <h3 style={contentStyle}><img src="./bg-3.png" alt="" /></h3>
+  </div>
+  <div>
+    <h3 style={contentStyle}><img src="./bg-5.png" alt="" /></h3>
+  </div>
+</Carousel>
+
 
       {/* Location-Based Cards Section */}
       <section className="w-screen py-12 rounded-2xl">
@@ -150,15 +202,12 @@ const HomePage = ({ state }) => {
           <div
             className="flex gap-6 p-4 transition-transform duration-1000 ease-in-out"
             style={{
-              transform: `translateX(-${currentIndex * (50 / 5)}%)`, // Slide cards horizontally
+              transform: `translateX(-${currentIndex * (50 / 5)}%)`,
             }}
           >
             {locations.map((location, index) => (
               <div key={index} className="w-120 flex-shrink-0 rounded-2xl">
-                <LocationCard
-                  txt={location.text}
-                  imageUrl={location.imageUrl}
-                />
+                <LocationCard txt={location.text} imageUrl={location.imageUrl} />
               </div>
             ))}
           </div>
@@ -167,13 +216,10 @@ const HomePage = ({ state }) => {
 
       {/* Event-Based Cards Section */}
       <div className="flex justify-between items-center mb-8 px-10">
-        {/* Upcoming Events Heading */}
         <h2 className="text-3xl font-bold">Upcoming Events</h2>
-
-        {/* Explore All Events Button */}
         <button
           className="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-md transition"
-          onClick={() => router.push("/events")} // Ensure `router` is initialized properly
+          onClick={() => router.push("/events")}
         >
           <Link to="/events">Explore All Events</Link>
         </button>
@@ -188,7 +234,6 @@ const HomePage = ({ state }) => {
             transition={{ duration: 0.5, delay: index * 0.1 }}
             className="w-full sm:w-80 p-6 bg-gray-800 rounded-lg shadow-xl hover:scale-105 transition-all"
           >
-            {/* VR Video Preview */}
             <div className="relative w-full h-48 overflow-hidden rounded-lg">
               <video
                 src={occasion.vrUrl}
@@ -196,11 +241,8 @@ const HomePage = ({ state }) => {
                 controls
               />
             </div>
-
-            {/* Event Details */}
             <h3 className="text-xl font-bold mt-4">{occasion.name}</h3>
             <p className="text-sm text-gray-400 mt-1">{occasion.location}</p>
-
             <div className="mt-3 flex justify-between text-sm">
               <span className="bg-green-500 px-3 py-1 rounded-md">
                 {occasion.cost} ETH
@@ -209,12 +251,9 @@ const HomePage = ({ state }) => {
                 {occasion.maxTickets}/{occasion.remainingTickets} Tickets Left
               </span>
             </div>
-
             <div className="mt-3 text-sm">
               📅 {occasion.date} ⏰ {occasion.time}
             </div>
-
-            {/* Purchase Button */}
             <button
               className="mt-4 w-full py-2 bg-indigo-600 hover:bg-indigo-500 rounded-md transition"
               onClick={() => handleBuyTicket(occasion)}
