@@ -15,6 +15,7 @@ import Navbar from "./components/Navbar"; // New Navbar Component
 import AIChatButton from "./components/AIChatButton";
 import MyEvents from "./pages/MyEvents";
 import ScanTicket from "./components/ScanTicket";
+import CategoryCard from "./components/CategoryCard";
 
 export default function App() {
   const [account, setAccount] = useState("");
@@ -60,6 +61,7 @@ export default function App() {
       <div className="min-h-screen bg-gray-900 text-white">
         <Navbar account={account} connectWallet={connectWallet} state={state}/>
         <AIChatButton account={account}  state={state}/>
+        
         {/* Routing Configuration */}
         <Routes>
           <Route path="/" element={<Home state={state} />} />

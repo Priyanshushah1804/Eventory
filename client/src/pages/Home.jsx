@@ -4,6 +4,10 @@ import SeatSelectionModal from "../components/SeatSelectionModal";
 import LocationCard from "../components/LocationCard";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import CardList from "../components/CategoryCard";
+import PlanEventsSection from "../components/PlanEventsSection";
+import EventFeatures from "../components/EventFeatures";
+import Footer from "../components/Footer";
 
 // Carousel Component
 const Carousels = ({ opacity }) => {
@@ -174,9 +178,7 @@ const HomePage = ({ state }) => {
 
   }};
 
-  const onChange = (currentSlide) => {
-    console.log(currentSlide);
-  }
+
 
   return (
     <div className="min-h-screen bg-black text-white flex flex-col align-center">
@@ -194,6 +196,7 @@ const HomePage = ({ state }) => {
     <h3 style={contentStyle}><img src="./bg-5.png" alt="" /></h3>
   </div>
 </Carousel>
+<EventFeatures />
 
 
       {/* Location-Based Cards Section */}
@@ -213,7 +216,14 @@ const HomePage = ({ state }) => {
           </div>
         </div>
       </section>
+      <section className="w-screen py-12 bg-gradient-to-r from-purple-500 to-indigo-600 text-center">
+        <h1 className="text-5xl font-extrabold text-white mb-4">Explore Events Around You</h1>
+        <p className="text-lg text-gray-200">Discover and book tickets for the best events happening near you.</p>
+      </section>
 
+      <CardList />
+      <PlanEventsSection />
+      
       {/* Event-Based Cards Section */}
       <div className="flex justify-between items-center mb-8 px-10">
         <h2 className="text-3xl font-bold">Upcoming Events</h2>
@@ -279,7 +289,9 @@ const HomePage = ({ state }) => {
           />
         )}
       </Modal>
+      <Footer />
     </div>
+    
   );
 };
 
