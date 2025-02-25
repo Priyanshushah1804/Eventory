@@ -80,7 +80,7 @@ const MyEvents = ({ state, account }) => {
         <div className="container mx-auto p-4 py-10">
             <h2 className="text-3xl font-bold text-center mb-8">My Events</h2>
             {/* <button className="bg-blue-500 text-white px-4 py-2 rounded-md" onClick={getMyEvents}>Get My Events</button> */}
-            
+
                 {myEvents.length > 0 ? (
                     myEvents.map((event) => (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">

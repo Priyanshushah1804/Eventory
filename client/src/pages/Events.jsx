@@ -25,12 +25,13 @@ const Events = ({ state, account }) => {
           id: Number(occasion[0]),
           name: occasion[1],
           cost: Number(occasion[2]) / 1e18, // Convert Wei to ETH
-          maxTickets: Number(occasion[3]),
-          remainingTickets: Number(occasion[4]),
+          remainingTickets: Number(occasion[3]),
+          maxTickets: Number(occasion[4]),
           date: occasion[5],
           time: occasion[6],
           location: occasion[7],
           bannerImage: occasion[8],
+          description: occasion[9] || "No description available", // Added a fallback for description
         });
       }
 
@@ -51,7 +52,7 @@ const Events = ({ state, account }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white py-10">
+    <div className="min-h-screen text-white py-10">
       <h2 className="text-3xl font-bold text-center mb-8">Upcoming Events</h2>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-6 text-white">
@@ -61,7 +62,7 @@ const Events = ({ state, account }) => {
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: index * 0.1 }}
-            className="p-6 bg-black rounded-lg shadow-xl hover:scale-105 transition-all"
+            className="rounded-lg shadow-xl hover:scale-105 transition-all"
           >
             {/* Event Image */}
             <div className="relative w-full h-48 overflow-hidden rounded-lg">
@@ -73,27 +74,33 @@ const Events = ({ state, account }) => {
             </div>
 
             {/* Event Details */}
-            <h3 className="text-xl font-bold mt-4 text-white text-center">{occasion.name}</h3>
-            <p className="text-sm text-gray-400 text-center">{occasion.location}</p>
-            <p className="text-xs text-gray-500 text-center mt-1">{occasion.date} | {occasion.time}</p>
+            <div className="p-4 bg-gray-800 rounded-b-2xl shadow-md">
+              <h3 className="text-lg font-bold">{occasion.name}</h3>
+              <div className="flex items-center text-sm text-gray-400 mt-1">
+                <span className="bg-gray-700 px-2 py-1 rounded-md mr-2 shadow-sm">
+                  BUSINESS
+                </span>
+                <span className="flex items-center">📅 {occasion.date}</span>
+                <span className="ml-2 flex items-center">📍 {occasion.location}</span>
+              </div>
+              <p className="text-xs text-gray-400 mt-2">{occasion.description}</p>
 
-            {/* Price and Tickets Info */}
-            <div className="mt-3 flex justify-center text-sm">
-              <span className="bg-green-600 px-3 py-1 rounded-md text-white mr-2">
-                {occasion.cost} ETH
-              </span>
-              <span className="bg-blue-600 px-3 py-1 rounded-md text-white">
-              {occasion.maxTickets} / {occasion.remainingTickets} Tickets Left
-              </span>
+              {/* Price and Tickets Info */}
+              <div className="mt-3 flex justify-between items-center text-sm">
+                <span className="bg-green-600 px-3 py-1 rounded-md text-white">
+                  {occasion.cost} ETH
+                </span>
+                <span className="bg-blue-600 px-3 py-1 rounded-md text-white">
+                  {occasion.remainingTickets} / {occasion.maxTickets} Tickets Left
+                </span>
+                <button
+                  className="bg-indigo-700 hover:bg-indigo-600 px-4 py-2 rounded-md text-sm shadow-md"
+                  onClick={() => handleBuyTicket(occasion)}
+                >
+                  Buy Ticket
+                </button>
+              </div>
             </div>
-
-            {/* Purchase Button */}
-            <button
-              className="mt-4 w-full py-2 bg-indigo-700 hover:bg-indigo-600 rounded-md transition"
-              onClick={() => handleBuyTicket(occasion)}
-            >
-              Buy Ticket
-            </button>
           </motion.div>
         ))}
       </div>
@@ -101,13 +108,17 @@ const Events = ({ state, account }) => {
       {/* Antd Modal */}
       <Modal
         title="Select Seats"
-        visible={isModalVisible}
+        open={isModalVisible} // Updated from 'visible' to 'open'
         onCancel={handleModalClose}
         footer={null}
         width={800}
       >
         {selectedOccasion && (
-          <SeatSelectionModal occasion={selectedOccasion} onClose={handleModalClose} state={state} />
+          <SeatSelectionModal
+            occasion={selectedOccasion}
+            onClose={handleModalClose}
+            state={state}
+          />
         )}
       </Modal>
     </div>
