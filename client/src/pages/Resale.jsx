@@ -20,6 +20,7 @@ const Resale = ({ state, account }) => {
                     }
                 }
                 setResaleTickets(resaleList);
+                console.log(resaleList)
             }
         };
 

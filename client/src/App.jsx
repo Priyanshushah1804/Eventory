@@ -62,7 +62,7 @@ export default function App() {
 
         {/* Routing Configuration */}
         <Routes>
-          <Route path="/" element={<Home state={state} />} />
+          <Route exact path="/" element={<Home state={state} />} />
           <Route path="/register" element={<Register state={state} account={account} />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />

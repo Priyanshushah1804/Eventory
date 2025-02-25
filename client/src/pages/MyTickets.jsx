@@ -61,7 +61,7 @@ const MyTickets = ({ state, account }) => {
       console.log(`Initiating resale for event ${eventId}, ticket ${ticketId} at price ${resellPrice}...`);
 
       // Call the smart contract function with the resell price
-      const tx = await contract.enableResale(eventId, ticketId, resellPrice);
+      const tx = await contract.enableResale(eventId, ticketId);
       await tx.wait(); // Wait for the transaction to be mined
 
       console.log(`Resale enabled successfully for ticket #${ticketId} at event #${eventId}`);
