@@ -67,7 +67,6 @@ export default function App() {
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/events" element={<Events state={state} account={account} />} />
-          <Route path="/demo" element={<Demo state={state} account={account} />} />
           <Route path="/contactus" element={<ContactUs />} />
           <Route path="/resale" element={<Resale state={state} account={account} />} />
           <Route path="/myTickets" element={<MyTickets state={state} account={account} />} />
