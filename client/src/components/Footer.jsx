@@ -1,69 +1,83 @@
 import React from "react";
+import { motion } from "framer-motion";
+import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn } from "react-icons/fa";
 
 const Footer = () => {
   return (
-    <footer className="bg-gradient-to-r from-indigo-900 to-gray-900 text-white py-10">
-      <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {/* Newsletter Section */}
-        <div className="space-y-4">
-          <h2 className="text-2xl font-bold">NEWSLETTER!</h2>
-          <p className="text-gray-400">Subscribe to stay updated on the latest events.</p>
-          <div className="flex items-center bg-gray-800 rounded-full overflow-hidden">
+    <footer className="relative bg-gray-900 text-white  mt-20 py-16 px-6 md:px-12">
+      {/* Background Blur Effect */}
+      <div className="absolute inset-0 bg-gradient-to-r from-indigo-800 to-gray-900 opacity-50 blur-xl"></div>
+
+      <div className="relative container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 z-10">
+        {/* Newsletter Subscription */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="space-y-4"
+        >
+          <h2 className="text-3xl font-bold">Stay Updated!</h2>
+          <p className="text-gray-300">Subscribe to our newsletter and never miss an event.</p>
+          <div className="flex items-center bg-white/10 backdrop-blur-md rounded-full overflow-hidden p-2">
             <input
               type="email"
               placeholder="Enter your email"
-              className="w-full px-4 py-2 bg-transparent outline-none text-white placeholder-gray-400"
+              className="flex-1 px-4 py-2 bg-transparent outline-none text-white placeholder-gray-300"
             />
-            <button className="bg-pink-600 hover:bg-pink-500 text-white px-4 py-2 rounded-full">
+            <button className="bg-pink-600 hover:bg-pink-500 text-white px-5 py-2 rounded-full transition">
               Subscribe
             </button>
           </div>
-        </div>
+        </motion.div>
 
-        {/* Company Info & Quick Links */}
-        <div className="space-y-4">
-          <h3 className="text-xl font-bold">Company</h3>
+        {/* Quick Links */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="space-y-4"
+        >
+          <h3 className="text-xl font-bold">Quick Links</h3>
           <ul className="space-y-2">
-            <li>
-              <a href="#" className="text-gray-400 hover:text-white transition">About Us</a>
-            </li>
-            <li>
-              <a href="#" className="text-gray-400 hover:text-white transition">FAQ</a>
-            </li>
-            <li>
-              <a href="#" className="text-gray-400 hover:text-white transition">Privacy Policy</a>
-            </li>
-            <li>
-              <a href="#" className="text-gray-400 hover:text-white transition">Terms & Conditions</a>
-            </li>
+            {["About Us", "FAQ", "Privacy Policy", "Terms & Conditions"].map((link, index) => (
+              <li key={index}>
+                <a href="#" className="text-gray-400 hover:text-white transition duration-300">
+                  {link}
+                </a>
+              </li>
+            ))}
           </ul>
-        </div>
+        </motion.div>
 
         {/* Contact & Social Media */}
-        <div className="space-y-4">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
+          className="space-y-4"
+        >
           <h3 className="text-xl font-bold">Contact Us</h3>
-          <p className="text-gray-400">Phone: +91 123 456 7890</p>
-          <p className="text-gray-400">Email: support@eventhub.com</p>
-
+          <p className="text-gray-300">📞 +91 123 456 7890</p>
+          <p className="text-gray-300">📧 support@eventhub.com</p>
+          {/* Social Media Icons */}
           <div className="flex space-x-4 mt-4">
-            <a href="#" className="text-gray-400 hover:text-white transition text-xl">
-              <i className="fab fa-facebook"></i>
-            </a>
-            <a href="#" className="text-gray-400 hover:text-white transition text-xl">
-              <i className="fab fa-twitter"></i>
-            </a>
-            <a href="#" className="text-gray-400 hover:text-white transition text-xl">
-              <i className="fab fa-instagram"></i>
-            </a>
-            <a href="#" className="text-gray-400 hover:text-white transition text-xl">
-              <i className="fab fa-linkedin"></i>
-            </a>
+            {[FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn].map((Icon, index) => (
+              <motion.a
+                key={index}
+                href="#"
+                whileHover={{ scale: 1.2 }}
+                whileTap={{ scale: 0.9 }}
+                className="p-3 rounded-full bg-white/10 hover:bg-white/20 transition text-white"
+              >
+                <Icon size={20} />
+              </motion.a>
+            ))}
           </div>
-        </div>
+        </motion.div>
       </div>
 
       {/* Footer Bottom */}
-      <div className="border-t border-gray-700 mt-10 pt-6 text-center text-gray-500 text-sm">
+      <div className="border-t border-gray-700 mt-12 pt-6 text-center text-gray-400 text-sm">
         &copy; {new Date().getFullYear()} EventHub. All Rights Reserved.
       </div>
     </footer>
