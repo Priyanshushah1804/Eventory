@@ -21,7 +21,7 @@ const MyTickets = ({ state, account }) => {
 
         // Check if the ticket is exhausted
         const isExhausted = await contract.ticketExhausted(eventId, seatId);
-        if (isExhausted) continue; // Skip exhausted tickets
+        // if (isExhausted) continue; // Skip exhausted tickets
 
         // Store the raw timestamp for occasion time checks
         const rawTimestamp = Number(occasion.date);
@@ -55,6 +55,7 @@ const MyTickets = ({ state, account }) => {
       console.error("Contract or account not found!");
       return;
     }
+
 
     try {
       console.log(`Initiating resale for event ${eventId}, ticket ${ticketId} at price ${resellPrice}...`);
@@ -113,6 +114,11 @@ const TicketCard = ({ ticket, onResell, onViewAR, index = 0, isExhausted,contrac
       alert("Ticket already listed for resale");
       return
     }
+    if(ticket.isExhausted){
+        alert("Ticket exhausted");
+      return
+
+    }
     setIsModalVisible(true);
   };
 
@@ -161,14 +167,14 @@ const TicketCard = ({ ticket, onResell, onViewAR, index = 0, isExhausted,contrac
         <defs>
           <clipPath id="ticketClip" clipPathUnits="objectBoundingBox">
             <path d="
-              M 0,0 
-              L 1,0 
-              L 1,0.4 
-              Q 0.95,0.5 1,0.6 
-              L 1,1 
-              L 0,1 
-              L 0,0.6 
-              Q 0.05,0.5 0,0.4 
+              M 0,0
+              L 1,0
+              L 1,0.4
+              Q 0.95,0.5 1,0.6
+              L 1,1
+              L 0,1
+              L 0,0.6
+              Q 0.05,0.5 0,0.4
               Z
             " />
           </clipPath>
@@ -227,7 +233,7 @@ const TicketCard = ({ ticket, onResell, onViewAR, index = 0, isExhausted,contrac
               <QRCode
                 style={{ width: "100px", height: "80px", overflow: "visible", border: "none" }}
                 errorLevel="H"
-                value={`${window.location.origin}/${ticket.id}/${ticket.seat}`}
+                value={`${window.location.origin}/scanTickets/${ticket.id}/${ticket.seat}`}
                 icon="./logo.webp"
               />
             </div>
