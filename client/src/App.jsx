@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route ,Link } from "react-router-dom";
 import { ethers } from "ethers";
 import abi from "./abis/TicketMaster.json"; // Adjust the path
 import Home from "./pages/Home";
@@ -56,11 +56,10 @@ export default function App() {
   }
 
   return (
-    <Router>
       <div className="min-h-screen bg-gray-900 text-white">
         <Navbar account={account} connectWallet={connectWallet} state={state}/>
         <AIChatButton account={account}  state={state}/>
-        
+
         {/* Routing Configuration */}
         <Routes>
           <Route path="/" element={<Home state={state} />} />
@@ -75,6 +74,5 @@ export default function App() {
           <Route path="/scanTicket/:id/:seatId" element={<ScanTicket state={state} account={account} connectWallet={connectWallet}/>} />
         </Routes>
       </div>
-    </Router>
   );
 }
