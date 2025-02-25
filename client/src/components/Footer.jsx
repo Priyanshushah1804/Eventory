@@ -57,8 +57,8 @@ const Footer = () => {
           className="space-y-4"
         >
           <h3 className="text-xl font-bold">Contact Us</h3>
-          <p className="text-gray-300">📞 +91 123 456 7890</p>
-          <p className="text-gray-300">📧 support@eventhub.com</p>
+          <p className="text-gray-300">📞 +91 6207209409</p>
+          <p className="text-gray-300">📧 support@eventory.com</p>
           {/* Social Media Icons */}
           <div className="flex space-x-4 mt-4">
             {[FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn].map((Icon, index) => (
@@ -78,7 +78,7 @@ const Footer = () => {
 
       {/* Footer Bottom */}
       <div className="border-t border-gray-700 mt-12 pt-6 text-center text-gray-400 text-sm">
-        &copy; {new Date().getFullYear()} EventHub. All Rights Reserved.
+        &copy; {new Date().getFullYear()} Eventory. All Rights Reserved.
       </div>
     </footer>
   );
