@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 const MyEvents = ({ state, account }) => {
@@ -6,6 +6,10 @@ const MyEvents = ({ state, account }) => {
     const [myEvents, setMyEvents] = useState([]);
     const [selectedFile, setSelectedFile] = useState(null);
     const [vrUrl, setVrUrl] = useState("");
+
+    useEffect(()=>{
+        getMyEvents();
+    },[state])
 
     const getMyEvents = async () => {
         try {
@@ -74,7 +78,7 @@ const MyEvents = ({ state, account }) => {
 
     return (
         <div className="container mx-auto p-4">
-            <button className="bg-blue-500 text-white px-4 py-2 rounded-md" onClick={getMyEvents}>Get My Events</button>
+            {/* <button className="bg-blue-500 text-white px-4 py-2 rounded-md" onClick={getMyEvents}>Get My Events</button> */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
                 {myEvents.length > 0 ? (
                     myEvents.map((event) => (
