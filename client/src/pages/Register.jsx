@@ -55,6 +55,8 @@ const Register = ({state}) => {
       );
       await tx.wait();
       console.log(tx);
+      alert("Event Registered!");
+      window.location.reload();
     } catch (error) {
       console.log(error);
     }
