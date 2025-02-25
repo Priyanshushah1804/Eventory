@@ -108,7 +108,7 @@ export default function Navbar({ account, connectWallet, state }) {
 
         {/* Dropdown Menu */}
         {showDropdown && (
-          <div className="absolute top-full mt-2 w-full bg-gray-950 border border-gray-800 rounded-lg shadow-lg z-50 overflow-hidden backdrop-blur-lg transition-all duration-300">
+          <div className="absolute opacity-90 top-full mt-8 w-[40vh]  bg-gray-950 border border-gray-800 rounded-lg shadow-lg z-50 overflow-hidden backdrop-blur-lg transition-all duration-300">
             <ul className="divide-y divide-gray-800">
               {dropdownData.length > 0 ? (
                 dropdownData.map((occasion) => (
