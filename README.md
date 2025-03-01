@@ -4,6 +4,11 @@ Eventory is a blockchain-powered event management platform that offers users a s
 
 ## Features
 
+- **Home Page**: 
+
+<img width="1512" alt="Screenshot 2025-03-01 at 5 00 14 PM" src="https://github.com/user-attachments/assets/b3d1cb69-96bb-4f52-9693-65a8f6e3de7d" />
+
+
 - **User Authentication**: Secure login system allowing users to access personalized event listings.
 
 - **Event Discovery**: Browse and search for events registered on the platform.
