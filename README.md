@@ -126,7 +126,7 @@ View all the tickets you have purchased in one centralized dashboard. This secti
 
 Explore Eventory by visiting the live application:
 
-- **Live Application:** [Eventory on Vercel](https://eventory-sandy.vercel.app/)
+- **Live Application:** [Eventory on Vercel](https://eventory-nu.vercel.app/)
 
 To start using the platform:
 
