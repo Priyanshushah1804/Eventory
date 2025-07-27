@@ -19,6 +19,12 @@ const About = () => {
       role: "Web Developer", 
       image: "rohan.jpg",
       link: "https://github.com/prakashrohan"  
+    },
+    {
+      name: "Priyanshu Shah", 
+      role: "Web Developer", 
+      image: "priyanshu.jpg",
+      link: "https://github.com/Priyanshushah1804"
     }
   ];
 

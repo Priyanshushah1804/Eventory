@@ -154,7 +154,7 @@ Follow these steps to set up and run the Eventory project locally:
 1. **Clone the Repository:**
 
    ```bash
-   git clone https://github.com/datmedevil17/Eventory.git
+   git clone https://github.com/Priyanshushah1804/Eventory
    cd client
 
 2. **Install Dependencies:**
